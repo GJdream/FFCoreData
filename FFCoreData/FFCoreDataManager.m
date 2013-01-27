@@ -1,0 +1,204 @@
+//
+//  WNCoreDataManager.m
+//  WhoNote
+//
+//  Created by Cory D. Wiles on 1/24/13.
+//  Copyright (c) 2013 Cory D. Wiles. All rights reserved.
+//
+
+#import "FFCoreDataManager.h"
+
+NSString * const WNCoreDataManagerDidSaveNotification       = @"WNCoreDataManagerDidSaveNotification";
+NSString * const WNCoreDataManagerDidSaveFailedNotification = @"WNCoreDataManagerDidSaveFailedNotification";
+
+static NSString *WNCoreManagerModelName  = @"FFCoreData";
+static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
+
+@interface FFCoreDataManager()
+
+- (NSString *)sharedDocumentsPath;
+
+@end
+
+@implementation FFCoreDataManager
+
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize mainObjectContext          = _mainObjectContext;
+@synthesize objectModel                = _objectModel;
+
++ (FFCoreDataManager *)sharedManager {
+
+  static FFCoreDataManager *_defaultManager = nil;
+  static dispatch_once_t oncePredicate;
+
+  dispatch_once(&oncePredicate, ^{
+    _defaultManager = [[FFCoreDataManager alloc] init];
+  });
+
+  return _defaultManager;
+}
+
+- (BOOL)save {
+
+	if (![self.mainObjectContext hasChanges]) {
+		return YES;
+  }
+
+	NSError *error = nil;
+
+	if (![self.mainObjectContext save:&error]) {
+
+		WNLog(@"Error while saving: %@\n%@", [error localizedDescription], [error userInfo]);
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:WNCoreDataManagerDidSaveFailedNotification
+                                                        object:error];
+		return NO;
+	}
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:WNCoreDataManagerDidSaveNotification
+                                                      object:nil];
+
+	return YES;
+}
+
+- (NSManagedObjectModel*)objectModel {
+
+  if (_objectModel) {
+		return _objectModel;
+  }
+
+	NSBundle *bundle = [NSBundle mainBundle];
+
+	NSString *modelPath = [bundle pathForResource:WNCoreManagerModelName
+                                         ofType:@"momd"];
+
+  _objectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
+
+	return _objectModel;
+}
+
+- (NSPersistentStoreCoordinator*)persistentStoreCoordinator {
+
+	if (_persistentStoreCoordinator) {
+		return _persistentStoreCoordinator;
+  }
+
+	/**
+   * Get the paths to the SQLite file
+   */
+
+	NSString *storePath = [[self sharedDocumentsPath] stringByAppendingPathComponent:WNCoreManagerSQLiteName];
+	NSURL *storeURL     = [NSURL fileURLWithPath:storePath];
+
+	/**
+   * Define the Core Data version migration options
+   */
+
+	NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                           [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                           [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption,
+                           nil];
+
+	/**
+   * Attempt to load the persistent store
+   */
+
+	NSError *error = nil;
+
+	_persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.objectModel];
+
+  if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                 configuration:nil
+                                                           URL:storeURL
+                                                       options:options
+                                                         error:&error]) {
+
+		NSLog(@"Fatal error while creating persistent store: %@", error);
+
+    abort();
+	}
+  
+	return _persistentStoreCoordinator;
+}
+
+- (NSManagedObjectContext*)mainObjectContext {
+
+	if (_mainObjectContext) {
+		return _mainObjectContext;
+  }
+
+	/**
+   * Create the main context only on the main thread
+   */
+
+	if (![NSThread isMainThread]) {
+
+//		[self performSelectorOnMainThread:@selector(mainObjectContext)
+//                           withObject:nil
+//                        waitUntilDone:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [self mainObjectContext];
+    });
+
+    return _mainObjectContext;
+	}
+
+	_mainObjectContext = [[NSManagedObjectContext alloc] init];
+
+	[_mainObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+  
+	return _mainObjectContext;
+}
+
+- (NSManagedObjectContext*)managedObjectContext {
+
+	NSManagedObjectContext *ctx = [[NSManagedObjectContext alloc] init];
+
+  [ctx setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+
+	return ctx;
+}
+
+#pragma mark - Private Methods
+
+- (NSString*)sharedDocumentsPath {
+
+	static NSString *__sharedDocumentsPath = nil;
+
+  if (__sharedDocumentsPath) {
+		return __sharedDocumentsPath;
+  }
+
+	/**
+   * Compose a path to the <Library>/Database directory
+   */
+
+	__sharedDocumentsPath = [LibraryDirectory() stringByAppendingPathComponent:@"Database"];
+
+	/**
+   * Ensure the database directory exists
+   */
+
+	NSFileManager *manager = [NSFileManager defaultManager];
+
+	BOOL isDirectory;
+
+  if (![manager fileExistsAtPath:__sharedDocumentsPath isDirectory:&isDirectory] || !isDirectory) {
+
+    NSError *error     = nil;
+		NSDictionary *attr = [NSDictionary dictionaryWithObject:NSFileProtectionComplete
+                                                     forKey:NSFileProtectionKey];
+
+		[manager createDirectoryAtPath:__sharedDocumentsPath
+		   withIntermediateDirectories:YES
+                        attributes:attr
+                             error:&error];
+		if (error) {
+			WNLog(@"Error creating directory path: %@", [error localizedDescription]);
+    }
+	}
+  
+	return __sharedDocumentsPath;
+}
+
+@end
