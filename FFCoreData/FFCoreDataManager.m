@@ -8,8 +8,8 @@
 
 #import "FFCoreDataManager.h"
 
-NSString * const WNCoreDataManagerDidSaveNotification       = @"WNCoreDataManagerDidSaveNotification";
-NSString * const WNCoreDataManagerDidSaveFailedNotification = @"WNCoreDataManagerDidSaveFailedNotification";
+NSString * const FFCoreDataManagerDidSaveNotification       = @"WNCoreDataManagerDidSaveNotification";
+NSString * const FFCoreDataManagerDidSaveFailedNotification = @"WNCoreDataManagerDidSaveFailedNotification";
 
 static NSString *WNCoreManagerModelName  = @"FFCoreData";
 static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
@@ -48,14 +48,14 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
 	if (![self.mainObjectContext save:&error]) {
 
-		WNLog(@"Error while saving: %@\n%@", [error localizedDescription], [error userInfo]);
+		NSLog(@"Error while saving: %@\n%@", [error localizedDescription], [error userInfo]);
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:WNCoreDataManagerDidSaveFailedNotification
+    [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveFailedNotification
                                                         object:error];
 		return NO;
 	}
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:WNCoreDataManagerDidSaveNotification
+	[[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveNotification
                                                       object:nil];
 
 	return YES;
@@ -194,7 +194,7 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
                         attributes:attr
                              error:&error];
 		if (error) {
-			WNLog(@"Error creating directory path: %@", [error localizedDescription]);
+			NSLog(@"Error creating directory path: %@", [error localizedDescription]);
     }
 	}
   
