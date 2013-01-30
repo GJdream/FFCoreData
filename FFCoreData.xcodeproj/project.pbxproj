@@ -28,6 +28,9 @@
 		01DD8E8816B5D944007AE08F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5B16B5D944007AE08F /* CoreData.framework */; };
 		01DD8E9016B5D944007AE08F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 01DD8E8E16B5D944007AE08F /* InfoPlist.strings */; };
 		01DD8E9316B5D944007AE08F /* FFCoreDataTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DD8E9216B5D944007AE08F /* FFCoreDataTests.m */; };
+		01DD8E9E16B5D9D7007AE08F /* FFEF.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E9C16B5D9CA007AE08F /* FFEF.framework */; };
+		01DD8EA516B5DA6F007AE08F /* FFCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DD8EA416B5DA6F007AE08F /* FFCoreDataManager.m */; };
+		01DD8EA616B5DA6F007AE08F /* FFCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DD8EA416B5DA6F007AE08F /* FFCoreDataManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +71,9 @@
 		01DD8E8F16B5D944007AE08F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		01DD8E9116B5D944007AE08F /* FFCoreDataTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFCoreDataTests.h; sourceTree = "<group>"; };
 		01DD8E9216B5D944007AE08F /* FFCoreDataTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFCoreDataTests.m; sourceTree = "<group>"; };
+		01DD8E9C16B5D9CA007AE08F /* FFEF.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FFEF.framework; path = Vendor/FFEF.framework; sourceTree = "<group>"; };
+		01DD8EA316B5DA6F007AE08F /* FFCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCoreDataManager.h; sourceTree = "<group>"; };
+		01DD8EA416B5DA6F007AE08F /* FFCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCoreDataManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01DD8E9E16B5D9D7007AE08F /* FFEF.framework in Frameworks */,
 				01DD8E5616B5D944007AE08F /* UIKit.framework in Frameworks */,
 				01DD8E5816B5D944007AE08F /* Foundation.framework in Frameworks */,
 				01DD8E5A16B5D944007AE08F /* CoreGraphics.framework in Frameworks */,
@@ -118,6 +125,7 @@
 		01DD8E5416B5D944007AE08F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				01DD8E9C16B5D9CA007AE08F /* FFEF.framework */,
 				01DD8E5516B5D944007AE08F /* UIKit.framework */,
 				01DD8E5716B5D944007AE08F /* Foundation.framework */,
 				01DD8E5916B5D944007AE08F /* CoreGraphics.framework */,
@@ -130,6 +138,8 @@
 		01DD8E5D16B5D944007AE08F /* FFCoreData */ = {
 			isa = PBXGroup;
 			children = (
+				01DD8EA316B5DA6F007AE08F /* FFCoreDataManager.h */,
+				01DD8EA416B5DA6F007AE08F /* FFCoreDataManager.m */,
 				01DD8E6616B5D944007AE08F /* CWAppDelegate.h */,
 				01DD8E6716B5D944007AE08F /* CWAppDelegate.m */,
 				01DD8E7216B5D944007AE08F /* CWMasterViewController.h */,
@@ -294,6 +304,7 @@
 				01DD8E7116B5D944007AE08F /* FFCoreData.xcdatamodeld in Sources */,
 				01DD8E7416B5D944007AE08F /* CWMasterViewController.m in Sources */,
 				01DD8E7716B5D944007AE08F /* CWDetailViewController.m in Sources */,
+				01DD8EA516B5DA6F007AE08F /* FFCoreDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +313,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DD8E9316B5D944007AE08F /* FFCoreDataTests.m in Sources */,
+				01DD8EA616B5DA6F007AE08F /* FFCoreDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,6 +416,10 @@
 		01DD8E9716B5D944007AE08F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Vendor\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FFCoreData/FFCoreData-Prefix.pch";
 				INFOPLIST_FILE = "FFCoreData/FFCoreData-Info.plist";
@@ -415,6 +431,10 @@
 		01DD8E9816B5D944007AE08F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Vendor\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FFCoreData/FFCoreData-Prefix.pch";
 				INFOPLIST_FILE = "FFCoreData/FFCoreData-Info.plist";
