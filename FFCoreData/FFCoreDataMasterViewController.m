@@ -11,14 +11,25 @@
 
 #import "FFUserProfile.h"
 #import "FFCity.h"
+#import "FFCoreDataManager.h"
+#import "FFCDUserProfile.h"
 
 @interface FFCoreDataMasterViewController ()
+
 @property (nonatomic, strong) FatFractal *ff;
 @property (nonatomic, copy) NSArray *content;
+
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
+- (void)persistFFObject:(id)obj;
 @end
 
 @implementation FFCoreDataMasterViewController
+
+@synthesize fetchedResultsController = _fetchedResultsController;
+
+- (void)dealloc {
+
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -39,57 +50,50 @@
 }
 							
 - (void)viewDidLoad {
-
   [super viewDidLoad];
-
-  // Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)didReceiveMemoryWarning {
   [super didReceiveMemoryWarning];
 }
 
-//- (void)insertNewObject:(id)sender {
-//
-//  NSManagedObjectContext *context   = [self.fetchedResultsController managedObjectContext];
-//  NSEntityDescription *entity       = [[self.fetchedResultsController fetchRequest] entity];
-//  NSManagedObject *newManagedObject = [NSEntityDescription insertNewObjectForEntityForName:[entity name]
-//                                                                    inManagedObjectContext:context];
-//    
-//  // If appropriate, configure the new managed object.
-//  // Normally you should use accessor methods, but using KVC here avoids the need to add a custom class to the template.
-//  [newManagedObject setValue:[NSDate date] forKey:@"timeStamp"];
-//  
-//  // Save the context.
-//  NSError *error = nil;
-//
-//  if (![context save:&error]) {
-//       // Replace this implementation with code to handle the error appropriately.
-//       // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-//      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-//      abort();
-//  }
-//}
-
 - (void)viewWillAppear:(BOOL)animated {
 
   [super viewWillAppear:animated];
 
-//  [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
+  [NSFetchedResultsController deleteCacheWithName:nil];
+
+//  if (![FFCoreDataAppDelegate lastSyncDate]) {
 //
-//    NSArray *profiles = (NSArray *)obj;
+//    [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
 //
-//    self.content = profiles;
+//      NSArray *profiles = (NSArray *)obj;
 //
-//    [self.tableView reloadData];
-//  }];
+//      NSLog(@"profiles: %@", profiles);
+//
+//      [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+//        [self persistFFObject:obj];
+//      }];
+//    }];
+//  }
+
+	NSError *error = nil;
+
+  if (![self.fetchedResultsController performFetch:&error]) {
+    // Replace this implementation with code to handle the error appropriately.
+    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+    abort();
+
+	} else {
+
+    [self.tableView reloadData];
+  }
 }
 
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
   return [[self.fetchedResultsController sections] count];
-//  return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -97,11 +101,8 @@
   id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
 
   return [sectionInfo numberOfObjects];
-
-//  return self.content.count;
 }
 
-// Customize the appearance of table view cells.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
   static NSString *CellIdentifier = @"Cell";
@@ -110,16 +111,11 @@
 
   if (cell == nil) {
 
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
 
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   }
 
-//  FFUserProfile *profile = (FFUserProfile *)[self.content objectAtIndex:indexPath.row];
-//
-//  NSLog(@"profile: %@", profile);
-//
-//  cell.textLabel.text = profile.user.firstName;
   [self configureCell:cell atIndexPath:indexPath];
 
   return cell;
@@ -143,53 +139,41 @@
 - (NSFetchedResultsController *)fetchedResultsController {
 
   if (_fetchedResultsController != nil) {
-      return _fetchedResultsController;
+    return _fetchedResultsController;
   }
-    
+
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-    // Edit the entity name as appropriate.
   NSEntityDescription *entity = [NSEntityDescription entityForName:@"FFCDUserProfile"
                                             inManagedObjectContext:self.managedObjectContext];
 
+  NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"sortDesc"
+                                                       ascending:NO];
+
   [fetchRequest setEntity:entity];
-  
-  // Set the batch size to a suitable number.
+  [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
   [fetchRequest setFetchBatchSize:20];
-  
-  // Edit the sort key as appropriate.
-  NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"city" ascending:NO];
-  NSArray *sortDescriptors = @[sortDescriptor];
-  
-  [fetchRequest setSortDescriptors:sortDescriptors];
-  
-  // Edit the section name key path and cache name if appropriate.
-  // nil for section name key path means "no sections".
-  NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                                              managedObjectContext:self.managedObjectContext
-                                                                                                sectionNameKeyPath:nil
-                                                                                                         cacheName:@"FFCDUserProfile"];
-  aFetchedResultsController.delegate = self;
 
-  self.fetchedResultsController = aFetchedResultsController;
-    
-	NSError *error = nil;
+  NSFetchedResultsController *theFetchedResultsController =
+  [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                      managedObjectContext:self.managedObjectContext
+                                        sectionNameKeyPath:nil
+                                                 cacheName:@"FFCDUserProfile"];
 
-  if (![self.fetchedResultsController performFetch:&error]) {
-     // Replace this implementation with code to handle the error appropriately.
-     // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development. 
-    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    abort();
-	}
-    
+  self.fetchedResultsController = theFetchedResultsController;
+
+  _fetchedResultsController.delegate = self;
+  
   return _fetchedResultsController;
-}    
+}
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView beginUpdates];
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type {
     switch(type) {
         case NSFetchedResultsChangeInsert:
             [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
@@ -233,22 +217,47 @@
   [self.tableView endUpdates];
 }
 
-/*
-// Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed. 
- 
- - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    // In the simplest, most efficient, case, reload the table view.
-    [self.tableView reloadData];
-}
- */
-
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
 
-  NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
-//  FFUserProfile *profile = 
+  FFCDUserProfile *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-//  cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
+  NSLog(@"mo: %@", object);
+
+  NSData *ffuserProfileData = [object valueForKey:@"ffuserProfile"];
+
+  FFUserProfile *profile = [NSKeyedUnarchiver unarchiveObjectWithData:ffuserProfileData];
+
+  cell.textLabel.text       = profile.user.firstName;
+  cell.detailTextLabel.text = object.sortDesc;
+}
+
+#pragma mark - Private Methods
+
+- (void)persistFFObject:(id)obj {
+
+  /**
+   * Hard coding / assuming the object is FFUserProfile
+   */
+
+  FFUserProfile *profile = (FFUserProfile *)obj;
+
+  NSData *dataOnObjectProfile = [NSKeyedArchiver archivedDataWithRootObject:profile];
+  NSData *dataOnObjectCity    = [NSKeyedArchiver archivedDataWithRootObject:profile.homeCity];
+
+  NSManagedObjectContext *context = [FFCoreDataManager sharedManager].mainObjectContext;
+  NSManagedObject *profileMO      = [NSEntityDescription insertNewObjectForEntityForName:@"FFCDUserProfile"
+                                                                  inManagedObjectContext:context];
+  NSManagedObject *ffcityMO       = [NSEntityDescription insertNewObjectForEntityForName:@"FFCDCity"
+                                                                  inManagedObjectContext:context];
+
+  [profileMO setValue:dataOnObjectProfile forKey:@"ffuserProfile"];
+  [profileMO setValue:ffcityMO forKey:@"city"];
+  [profileMO setValue:profile.homeCity.name forKey:@"sortDesc"];
+
+  [ffcityMO setValue:dataOnObjectCity forKey:@"ffcity"];
+  [ffcityMO setValue:profileMO forKey:@"profile"];
+
+  [[FFCoreDataManager sharedManager] save];
 }
 
 @end
