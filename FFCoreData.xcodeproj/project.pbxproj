@@ -65,6 +65,9 @@
 		0198507716BA2E3400694D69 /* FFCDCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCDCity.h; sourceTree = "<group>"; };
 		0198507816BA2E3400694D69 /* FFCDCity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCDCity.m; sourceTree = "<group>"; };
 		0198507A16BA347700694D69 /* FatFractal+FFCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FatFractal+FFCoreData.h"; sourceTree = "<group>"; };
+		01B9EB1C16BB0430008E4357 /* FFCoreData 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FFCoreData 3.xcdatamodel"; sourceTree = "<group>"; };
+		01B9EB1D16BB0930008E4357 /* FFCoreData 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FFCoreData 4.xcdatamodel"; sourceTree = "<group>"; };
+		01B9EB1E16BB0CF4008E4357 /* FFCoreData 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FFCoreData 5.xcdatamodel"; sourceTree = "<group>"; };
 		01DD8E5116B5D944007AE08F /* FFCoreData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFCoreData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01DD8E5516B5D944007AE08F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01DD8E5716B5D944007AE08F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -579,9 +582,12 @@
 			isa = XCVersionGroup;
 			children = (
 				0198506F16BA21E000694D69 /* FFCoreData 2.xcdatamodel */,
+				01B9EB1C16BB0430008E4357 /* FFCoreData 3.xcdatamodel */,
+				01B9EB1D16BB0930008E4357 /* FFCoreData 4.xcdatamodel */,
+				01B9EB1E16BB0CF4008E4357 /* FFCoreData 5.xcdatamodel */,
 				01DD8E7016B5D944007AE08F /* FFCoreData.xcdatamodel */,
 			);
-			currentVersion = 0198506F16BA21E000694D69 /* FFCoreData 2.xcdatamodel */;
+			currentVersion = 01B9EB1E16BB0CF4008E4357 /* FFCoreData 5.xcdatamodel */;
 			path = FFCoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
