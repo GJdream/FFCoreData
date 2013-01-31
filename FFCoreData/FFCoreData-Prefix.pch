@@ -15,4 +15,6 @@
   #import <FFEF/FatFractal.h>
   #import "FFCoreDataGlobals.h"
   #import "FFCoreDataUtils.h"
+  #import "FFCoreDataAppDelegate+FFCoreData.h"
+#import "FatFractal+FFCoreData.h"
 #endif
