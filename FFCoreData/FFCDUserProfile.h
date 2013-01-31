@@ -13,6 +13,7 @@
 @interface FFCDUserProfile : NSManagedObject
 
 @property (nonatomic, strong) NSData *ffuserProfile;
+@property (nonatomic, copy) NSString *sortDesc;
 @property (nonatomic, strong) NSManagedObject *city;
 
 @end

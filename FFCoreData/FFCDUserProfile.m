@@ -12,6 +12,7 @@
 @implementation FFCDUserProfile
 
 @dynamic ffuserProfile;
+@dynamic sortDesc;
 @dynamic city;
 
 @end
