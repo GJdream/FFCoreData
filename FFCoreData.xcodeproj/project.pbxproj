@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0198506016B9C4CD00694D69 /* FFCDUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198505F16B9C4CD00694D69 /* FFCDUserProfile.m */; };
+		0198506316B9C4E800694D69 /* FFUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198506216B9C4E800694D69 /* FFUserProfile.m */; };
+		0198506816B9C6B900694D69 /* FFCoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198506716B9C6B900694D69 /* FFCoreDataUtils.m */; };
 		01DD8E5616B5D944007AE08F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5516B5D944007AE08F /* UIKit.framework */; };
 		01DD8E5816B5D944007AE08F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5716B5D944007AE08F /* Foundation.framework */; };
 		01DD8E5A16B5D944007AE08F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5916B5D944007AE08F /* CoreGraphics.framework */; };
@@ -44,6 +47,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0198505E16B9C4CD00694D69 /* FFCDUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCDUserProfile.h; sourceTree = "<group>"; };
+		0198505F16B9C4CD00694D69 /* FFCDUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCDUserProfile.m; sourceTree = "<group>"; };
+		0198506116B9C4E800694D69 /* FFUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFUserProfile.h; sourceTree = "<group>"; };
+		0198506216B9C4E800694D69 /* FFUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFUserProfile.m; sourceTree = "<group>"; };
+		0198506616B9C6B900694D69 /* FFCoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCoreDataUtils.h; sourceTree = "<group>"; };
+		0198506716B9C6B900694D69 /* FFCoreDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCoreDataUtils.m; sourceTree = "<group>"; };
+		0198506916B9C6F800694D69 /* FFCoreDataGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCoreDataGlobals.h; sourceTree = "<group>"; };
 		01DD8E5116B5D944007AE08F /* FFCoreData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFCoreData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01DD8E5516B5D944007AE08F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01DD8E5716B5D944007AE08F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -103,6 +113,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0198506416B9C4EC00694D69 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0198506516B9C4F400694D69 /* CoreData */,
+				0198506116B9C4E800694D69 /* FFUserProfile.h */,
+				0198506216B9C4E800694D69 /* FFUserProfile.m */,
+				0198506616B9C6B900694D69 /* FFCoreDataUtils.h */,
+				0198506716B9C6B900694D69 /* FFCoreDataUtils.m */,
+				0198506916B9C6F800694D69 /* FFCoreDataGlobals.h */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		0198506516B9C4F400694D69 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				0198505E16B9C4CD00694D69 /* FFCDUserProfile.h */,
+				0198505F16B9C4CD00694D69 /* FFCDUserProfile.m */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
 		01DD8E4616B5D944007AE08F = {
 			isa = PBXGroup;
 			children = (
@@ -144,6 +176,7 @@
 				01DD8E6716B5D944007AE08F /* CWAppDelegate.m */,
 				01DD8E7216B5D944007AE08F /* CWMasterViewController.h */,
 				01DD8E7316B5D944007AE08F /* CWMasterViewController.m */,
+				0198506416B9C4EC00694D69 /* Models */,
 				01DD8E7516B5D944007AE08F /* CWDetailViewController.h */,
 				01DD8E7616B5D944007AE08F /* CWDetailViewController.m */,
 				01DD8E7816B5D944007AE08F /* CWMasterViewController.xib */,
@@ -305,6 +338,9 @@
 				01DD8E7416B5D944007AE08F /* CWMasterViewController.m in Sources */,
 				01DD8E7716B5D944007AE08F /* CWDetailViewController.m in Sources */,
 				01DD8EA516B5DA6F007AE08F /* FFCoreDataManager.m in Sources */,
+				0198506016B9C4CD00694D69 /* FFCDUserProfile.m in Sources */,
+				0198506316B9C4E800694D69 /* FFUserProfile.m in Sources */,
+				0198506816B9C6B900694D69 /* FFCoreDataUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,6 +532,7 @@
 				01DD8E9816B5D944007AE08F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		01DD8E9916B5D944007AE08F /* Build configuration list for PBXNativeTarget "FFCoreDataTests" */ = {
 			isa = XCConfigurationList;
@@ -504,6 +541,7 @@
 				01DD8E9B16B5D944007AE08F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
