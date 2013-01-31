@@ -10,6 +10,7 @@
 		0198506016B9C4CD00694D69 /* FFCDUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198505F16B9C4CD00694D69 /* FFCDUserProfile.m */; };
 		0198506316B9C4E800694D69 /* FFUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198506216B9C4E800694D69 /* FFUserProfile.m */; };
 		0198506816B9C6B900694D69 /* FFCoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198506716B9C6B900694D69 /* FFCoreDataUtils.m */; };
+		0198506E16BA151800694D69 /* FFCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198506D16BA151800694D69 /* FFCity.m */; };
 		01DD8E5616B5D944007AE08F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5516B5D944007AE08F /* UIKit.framework */; };
 		01DD8E5816B5D944007AE08F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5716B5D944007AE08F /* Foundation.framework */; };
 		01DD8E5A16B5D944007AE08F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5916B5D944007AE08F /* CoreGraphics.framework */; };
@@ -54,6 +55,8 @@
 		0198506616B9C6B900694D69 /* FFCoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCoreDataUtils.h; sourceTree = "<group>"; };
 		0198506716B9C6B900694D69 /* FFCoreDataUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCoreDataUtils.m; sourceTree = "<group>"; };
 		0198506916B9C6F800694D69 /* FFCoreDataGlobals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCoreDataGlobals.h; sourceTree = "<group>"; };
+		0198506C16BA151800694D69 /* FFCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCity.h; sourceTree = "<group>"; };
+		0198506D16BA151800694D69 /* FFCity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCity.m; sourceTree = "<group>"; };
 		01DD8E5116B5D944007AE08F /* FFCoreData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFCoreData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01DD8E5516B5D944007AE08F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01DD8E5716B5D944007AE08F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -119,9 +122,8 @@
 				0198506516B9C4F400694D69 /* CoreData */,
 				0198506116B9C4E800694D69 /* FFUserProfile.h */,
 				0198506216B9C4E800694D69 /* FFUserProfile.m */,
-				0198506616B9C6B900694D69 /* FFCoreDataUtils.h */,
-				0198506716B9C6B900694D69 /* FFCoreDataUtils.m */,
-				0198506916B9C6F800694D69 /* FFCoreDataGlobals.h */,
+				0198506C16BA151800694D69 /* FFCity.h */,
+				0198506D16BA151800694D69 /* FFCity.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -170,6 +172,9 @@
 		01DD8E5D16B5D944007AE08F /* FFCoreData */ = {
 			isa = PBXGroup;
 			children = (
+				0198506616B9C6B900694D69 /* FFCoreDataUtils.h */,
+				0198506716B9C6B900694D69 /* FFCoreDataUtils.m */,
+				0198506916B9C6F800694D69 /* FFCoreDataGlobals.h */,
 				01DD8EA316B5DA6F007AE08F /* FFCoreDataManager.h */,
 				01DD8EA416B5DA6F007AE08F /* FFCoreDataManager.m */,
 				01DD8E6616B5D944007AE08F /* CWAppDelegate.h */,
@@ -341,6 +346,7 @@
 				0198506016B9C4CD00694D69 /* FFCDUserProfile.m in Sources */,
 				0198506316B9C4E800694D69 /* FFUserProfile.m in Sources */,
 				0198506816B9C6B900694D69 /* FFCoreDataUtils.m in Sources */,
+				0198506E16BA151800694D69 /* FFCity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
