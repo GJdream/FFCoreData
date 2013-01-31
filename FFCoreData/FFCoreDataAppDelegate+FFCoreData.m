@@ -10,10 +10,6 @@
 
 @implementation FFCoreDataAppDelegate (FFCoreData)
 
-+ (BOOL)isFirstSync {
-  return [[NSUserDefaults standardUserDefaults] boolForKey:FFCoreDataAppFirstSyncKey];
-}
-
 + (NSDate *)lastSyncDate {
   return [[NSUserDefaults standardUserDefaults] valueForKey:FFCoreDataAppLastSyncKey];
 }
