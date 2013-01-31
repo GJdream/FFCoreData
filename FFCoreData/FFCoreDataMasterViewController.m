@@ -7,10 +7,13 @@
 //
 
 #import "FFCoreDataMasterViewController.h"
-
 #import "FFCoreDataDetailViewController.h"
 
+#import "FFUserProfile.h"
+
 @interface FFCoreDataMasterViewController ()
+@property (nonatomic, strong) FatFractal *ff;
+@property (nonatomic, copy) NSArray *content;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
@@ -33,11 +36,9 @@
 
   // Do any additional setup after loading the view, typically from a nib.
 
-  self.navigationItem.leftBarButtonItem = self.editButtonItem;
+  self.ff = [[FatFractal alloc] initWithBaseUrl:@"http://cory.fatfractal.com/coredata/" sslUrl:@"https://cory.fatfractal.com/coredata/"];
 
-  UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-
-  self.navigationItem.rightBarButtonItem = addButton;
+  self.ff.autoLoadRefs = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,17 +67,34 @@
 //  }
 //}
 
+- (void)viewWillAppear:(BOOL)animated {
+
+  [super viewWillAppear:animated];
+
+  [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
+    // handle error, response and httpResponse.
+    NSArray *readMyStuffArray = (NSArray *)obj;
+
+    NSLog(@"obj: %@", readMyStuffArray);
+    self.content = readMyStuffArray;
+    [self.tableView reloadData];
+  }];
+}
+
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-  return [[self.fetchedResultsController sections] count];
+//  return [[self.fetchedResultsController sections] count];
+  return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-  id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+//  id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
+//
+//  return [sectionInfo numberOfObjects];
 
-  return [sectionInfo numberOfObjects];
+  return self.content.count;
 }
 
 // Customize the appearance of table view cells.
@@ -93,7 +111,13 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   }
 
-  [self configureCell:cell atIndexPath:indexPath];
+  FFUserProfile *profile = (FFUserProfile *)[self.content objectAtIndex:indexPath.row];
+
+  NSLog(@"profile: %@", profile);
+
+  cell.textLabel.text = profile.user.firstName;
+
+//  [self configureCell:cell atIndexPath:indexPath];
 
   return cell;
 }
