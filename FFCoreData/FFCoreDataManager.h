@@ -12,18 +12,6 @@
 extern NSString * const FFCoreDataManagerDidSaveNotification;
 extern NSString * const FFCoreDataManagerDidSaveFailedNotification;
 
-static inline NSString *LibraryDirectory() {
-
-  static NSString *_libraryPath = nil;
-  static dispatch_once_t oncePred;
-
-  dispatch_once(&oncePred, ^{
-    _libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-  });
-
-	return _libraryPath;
-}
-
 @interface FFCoreDataManager : NSObject
 
 @property (nonatomic, readonly, retain) NSManagedObjectModel *objectModel;
