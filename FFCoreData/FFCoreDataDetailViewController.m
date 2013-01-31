@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Cory D. Wiles. All rights reserved.
 //
 
-#import "CWDetailViewController.h"
+#import "FFCoreDataDetailViewController.h"
 
-@interface CWDetailViewController ()
+@interface FFCoreDataDetailViewController ()
 - (void)configureView;
 @end
 
-@implementation CWDetailViewController
+@implementation FFCoreDataDetailViewController
 
 #pragma mark - Managing the detail item
 

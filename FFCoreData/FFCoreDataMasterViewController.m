@@ -6,15 +6,15 @@
 //  Copyright (c) 2013 Cory D. Wiles. All rights reserved.
 //
 
-#import "CWMasterViewController.h"
+#import "FFCoreDataMasterViewController.h"
 
-#import "CWDetailViewController.h"
+#import "FFCoreDataDetailViewController.h"
 
-@interface CWMasterViewController ()
+@interface FFCoreDataMasterViewController ()
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath;
 @end
 
-@implementation CWMasterViewController
+@implementation FFCoreDataMasterViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 
@@ -101,7 +101,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
   if (!self.detailViewController) {
-    self.detailViewController = [[CWDetailViewController alloc] initWithNibName:@"CWDetailViewController" bundle:nil];
+    self.detailViewController = [[FFCoreDataDetailViewController alloc] initWithNibName:@"CWDetailViewController" bundle:nil];
   }
 
   NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];

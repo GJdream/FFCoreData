@@ -9,11 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-@class CWDetailViewController;
+@class FFCoreDataDetailViewController;
 
-@interface CWMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>
+@interface FFCoreDataMasterViewController : UITableViewController <NSFetchedResultsControllerDelegate>
 
-@property (strong, nonatomic) CWDetailViewController *detailViewController;
+@property (strong, nonatomic) FFCoreDataDetailViewController *detailViewController;
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 

@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <FFEF/FatFractal.h>
 
-@interface CWAppDelegate : UIResponder <UIApplicationDelegate>
+extern NSString * const FFCoreDataAppFirstSyncKey;
+
+@interface FFCoreDataAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UINavigationController *navigationController;
