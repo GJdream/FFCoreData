@@ -19,7 +19,7 @@ NSString * const FFCoreDataAppLastSyncKey  = @"FFCoreDataAppLastSyncKey";
 
   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
-  FFCoreDataMasterViewController *masterViewController = [[FFCoreDataMasterViewController alloc] initWithNibName:@"CWMasterViewController" bundle:nil];
+  FFCoreDataMasterViewController *masterViewController = [[FFCoreDataMasterViewController alloc] initWithNibName:@"FFCoreDataMasterViewController" bundle:nil];
 
   masterViewController.managedObjectContext = [FFCoreDataManager sharedManager].managedObjectContext;
 
