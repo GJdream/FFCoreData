@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "CWAppDelegate.h"
+#import "FFCoreDataAppDelegate.h"
 
 int main(int argc, char *argv[])
 {
   @autoreleasepool {
-      return UIApplicationMain(argc, argv, nil, NSStringFromClass([CWAppDelegate class]));
+      return UIApplicationMain(argc, argv, nil, NSStringFromClass([FFCoreDataAppDelegate class]));
   }
 }
