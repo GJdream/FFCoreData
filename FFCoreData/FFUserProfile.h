@@ -18,7 +18,7 @@ extern NSString * const FFUserProfileMetaKey;
 @interface FFUserProfile : NSObject <NSCoding>
 
 @property (nonatomic, strong) FFUser *user;
-@property (nonatomic, copy) NSString *randomString;
-@property (nonatomic, strong) FFCity *city;
+@property (nonatomic, copy) NSString *randomCode;
+@property (nonatomic, strong) FFCity *homeCity;
 
 @end

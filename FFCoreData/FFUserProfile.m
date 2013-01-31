@@ -22,10 +22,12 @@ NSString * const FFUserProfileMetaKey             = @"FFUserProfileMetaKey";
 - (void)encodeWithCoder:(NSCoder *)encoder {
 
   [encoder encodeObject:self.user forKey:FFUserProfileUserKey];
-  [encoder encodeObject:self.randomString forKey:FFUserProfileUserRandomStringKey];
-  [encoder encodeObject:self.city forKey:FFUserProfileFFCityKey];
+  [encoder encodeObject:self.randomCode forKey:FFUserProfileUserRandomStringKey];
+  [encoder encodeObject:self.homeCity forKey:FFUserProfileFFCityKey];
 
   FFMetaData *metaData = [[FatFractal main] metaDataForObj:self];
+
+  NSLog(@"metaData with encode: %@", metaData);
 
   self.metaData = metaData;
 
@@ -39,11 +41,12 @@ NSString * const FFUserProfileMetaKey             = @"FFUserProfileMetaKey";
   if (self) {
 
     self.user         = [decoder decodeObjectForKey:FFUserProfileUserKey];
-    self.randomString = [decoder decodeObjectForKey:FFUserProfileUserRandomStringKey];
-    self.city         = [decoder decodeObjectForKey:FFUserProfileFFCityKey];
+    self.randomCode = [decoder decodeObjectForKey:FFUserProfileUserRandomStringKey];
+    self.homeCity         = [decoder decodeObjectForKey:FFUserProfileFFCityKey];
     self.metaData     = [decoder decodeObjectForKey:FFUserProfileMetaKey];
 
     if (self.metaData) {
+        NSLog(@"metaData after init: %@", self.metaData);
       [[FatFractal main] setMetaData:self.metaData forObj:self];
     }
   }
