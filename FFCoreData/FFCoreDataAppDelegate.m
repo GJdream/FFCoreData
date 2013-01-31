@@ -11,6 +11,7 @@
 #import "FFCoreDataMasterViewController.h"
 
 NSString * const FFCoreDataAppFirstSyncKey = @"FFCoreDataAppFirstSyncKey";
+NSString * const FFCoreDataAppLastSyncKey  = @"FFCoreDataAppLastSyncKey";
 
 @implementation FFCoreDataAppDelegate
 
