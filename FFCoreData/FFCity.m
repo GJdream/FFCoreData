@@ -22,9 +22,9 @@ NSString * const FFCityMetaKey = @"FFCityMetaKey";
   [encoder encodeObject:self.name forKey:FFCityNameKey];
 
   FFMetaData *metaData = [[FatFractal main] metaDataForObj:self];
-
+//
   self.metaData = metaData;
-
+//
   [encoder encodeObject:self.metaData forKey:FFCityMetaKey];
 }
 
