@@ -75,30 +75,30 @@
 
   [super viewWillAppear:animated];
 
-  [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
-    // handle error, response and httpResponse.
-    NSArray *readMyStuffArray = (NSArray *)obj;
-
-    NSLog(@"obj: %@", readMyStuffArray);
-    self.content = readMyStuffArray;
-    [self.tableView reloadData];
-  }];
+//  [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
+//
+//    NSArray *profiles = (NSArray *)obj;
+//
+//    self.content = profiles;
+//
+//    [self.tableView reloadData];
+//  }];
 }
 
 #pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//  return [[self.fetchedResultsController sections] count];
-  return 1;
+  return [[self.fetchedResultsController sections] count];
+//  return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-//  id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
-//
-//  return [sectionInfo numberOfObjects];
+  id <NSFetchedResultsSectionInfo> sectionInfo = [self.fetchedResultsController sections][section];
 
-  return self.content.count;
+  return [sectionInfo numberOfObjects];
+
+//  return self.content.count;
 }
 
 // Customize the appearance of table view cells.
@@ -115,12 +115,12 @@
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   }
 
-  FFUserProfile *profile = (FFUserProfile *)[self.content objectAtIndex:indexPath.row];
-
-  NSLog(@"profile: %@", profile);
-
-  cell.textLabel.text = profile.randomCode;
-//  [self configureCell:cell atIndexPath:indexPath];
+//  FFUserProfile *profile = (FFUserProfile *)[self.content objectAtIndex:indexPath.row];
+//
+//  NSLog(@"profile: %@", profile);
+//
+//  cell.textLabel.text = profile.user.firstName;
+  [self configureCell:cell atIndexPath:indexPath];
 
   return cell;
 }
@@ -148,7 +148,7 @@
     
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     // Edit the entity name as appropriate.
-  NSEntityDescription *entity = [NSEntityDescription entityForName:@"Event"
+  NSEntityDescription *entity = [NSEntityDescription entityForName:@"FFCDUserProfile"
                                             inManagedObjectContext:self.managedObjectContext];
 
   [fetchRequest setEntity:entity];
@@ -157,7 +157,7 @@
   [fetchRequest setFetchBatchSize:20];
   
   // Edit the sort key as appropriate.
-  NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timeStamp" ascending:NO];
+  NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"city" ascending:NO];
   NSArray *sortDescriptors = @[sortDescriptor];
   
   [fetchRequest setSortDescriptors:sortDescriptors];
@@ -167,7 +167,7 @@
   NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                                               managedObjectContext:self.managedObjectContext
                                                                                                 sectionNameKeyPath:nil
-                                                                                                         cacheName:@"Master"];
+                                                                                                         cacheName:@"FFCDUserProfile"];
   aFetchedResultsController.delegate = self;
 
   self.fetchedResultsController = aFetchedResultsController;
@@ -201,10 +201,13 @@
     }
 }
 
-- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath {
-    UITableView *tableView = self.tableView;
+
+  UITableView *tableView = self.tableView;
     
     switch(type) {
         case NSFetchedResultsChangeInsert:
@@ -243,8 +246,9 @@
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {
 
   NSManagedObject *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
+//  FFUserProfile *profile = 
 
-  cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
+//  cell.textLabel.text = [[object valueForKey:@"timeStamp"] description];
 }
 
 @end
