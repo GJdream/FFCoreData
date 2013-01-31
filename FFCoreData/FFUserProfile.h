@@ -10,11 +10,15 @@
 
 extern NSString * const FFUserProfileUserKey;
 extern NSString * const FFUserProfileUserRandomStringKey;
+extern NSString * const FFUserProfileFFCityKey;
 extern NSString * const FFUserProfileUserFilePrefix;
+
+@class FFCity;
 
 @interface FFUserProfile : NSObject <NSCoding>
 
 @property (nonatomic, strong) FFUser *user;
 @property (nonatomic, copy) NSString *randomString;
+@property (nonatomic, strong) FFCity *city;
 
 @end

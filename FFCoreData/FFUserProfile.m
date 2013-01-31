@@ -10,6 +10,7 @@
 
 NSString * const FFUserProfileUserKey             = @"FFUserProfileUserKey";
 NSString * const FFUserProfileUserRandomStringKey = @"FFUserProfileUserRandomStringKey";
+NSString * const FFUserProfileFFCityKey           = @"FFUserProfileFFCityKey";
 NSString * const FFUserProfileUserFilePrefix      = @"FFUserProfile-";
 
 @implementation FFUserProfile
@@ -18,6 +19,7 @@ NSString * const FFUserProfileUserFilePrefix      = @"FFUserProfile-";
 
   [encoder encodeObject:self.user forKey:FFUserProfileUserKey];
   [encoder encodeObject:self.randomString forKey:FFUserProfileUserRandomStringKey];
+  [encoder encodeObject:self.city forKey:FFUserProfileFFCityKey];
 
   FFMetaData *metaData = [[FatFractal main] metaDataForObj:self];
 
@@ -34,6 +36,7 @@ NSString * const FFUserProfileUserFilePrefix      = @"FFUserProfile-";
 
     self.user         = [decoder decodeObjectForKey:FFUserProfileUserKey];
     self.randomString = [decoder decodeObjectForKey:FFUserProfileUserRandomStringKey];
+    self.city         = [decoder decodeObjectForKey:FFUserProfileFFCityKey];
 
     FFMetaData *metaData = (FFMetaData *)[FFCoreDataUtils loadObjectFromFilename:FFUserProfileUserFilePrefix];
 
