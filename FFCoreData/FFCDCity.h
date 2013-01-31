@@ -13,7 +13,7 @@
 
 @interface FFCDCity : NSManagedObject
 
-@property (nonatomic, strong) NSString * ffcity;
+@property (nonatomic, strong) NSData *ffcity;
 @property (nonatomic, strong) FFCDUserProfile *profile;
 
 @end
