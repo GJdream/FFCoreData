@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <FFEF/FatFractal.h>
 
-extern NSString * const FFCoreDataAppFirstSyncKey;
 extern NSString * const FFCoreDataAppLastSyncKey;
 
 @interface FFCoreDataAppDelegate : UIResponder <UIApplicationDelegate>
