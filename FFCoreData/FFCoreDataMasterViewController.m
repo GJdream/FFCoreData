@@ -10,6 +10,7 @@
 #import "FFCoreDataDetailViewController.h"
 
 #import "FFUserProfile.h"
+#import "FFCity.h"
 
 @interface FFCoreDataMasterViewController ()
 @property (nonatomic, strong) FatFractal *ff;
@@ -24,7 +25,14 @@
   self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 
   if (self) {
+
     self.title = NSLocalizedString(@"Master", @"Master");
+
+    _ff = [[FatFractal alloc] initWithBaseUrl:@"http://cory.fatfractal.com/coredata/"
+                                       sslUrl:@"https://cory.fatfractal.com/coredata/"];
+
+    [_ff registerClass:[FFUserProfile class] forClazz:@"CDProfile"];
+    [_ff registerClass:[FFCity class] forClazz:@"CDCity"];
   }
 
   return self;
@@ -35,10 +43,6 @@
   [super viewDidLoad];
 
   // Do any additional setup after loading the view, typically from a nib.
-
-  self.ff = [[FatFractal alloc] initWithBaseUrl:@"http://cory.fatfractal.com/coredata/" sslUrl:@"https://cory.fatfractal.com/coredata/"];
-
-  self.ff.autoLoadRefs = YES;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -115,8 +119,7 @@
 
   NSLog(@"profile: %@", profile);
 
-  cell.textLabel.text = profile.user.firstName;
-
+  cell.textLabel.text = profile.randomCode;
 //  [self configureCell:cell atIndexPath:indexPath];
 
   return cell;
