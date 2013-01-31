@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="FFCDUserProfile" syncable="YES">
+    <entity name="FFCDCity" representedClassName="FFCDCity" syncable="YES">
+        <attribute name="ffcity" optional="YES" attributeType="String" minValueString="1" defaultValueString="No City Set" syncable="YES"/>
+        <relationship name="profile" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="FFCDUserProfile" inverseName="city" inverseEntity="FFCDUserProfile" syncable="YES"/>
+    </entity>
+    <entity name="FFCDUserProfile" representedClassName="FFCDUserProfile" syncable="YES">
         <attribute name="ffuserProfile" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="city" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="FFCDCity" inverseName="profile" inverseEntity="FFCDCity" syncable="YES"/>
     </entity>
     <elements>
-        <element name="FFCDUserProfile" positionX="-36" positionY="9" width="128" height="58"/>
+        <element name="FFCDUserProfile" positionX="7" positionY="-298" width="128" height="73"/>
+        <element name="FFCDCity" positionX="225" positionY="-261" width="128" height="73"/>
     </elements>
 </model>
