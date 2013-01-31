@@ -11,6 +11,8 @@
 		0198506816B9C6B900694D69 /* FFCoreDataUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198506716B9C6B900694D69 /* FFCoreDataUtils.m */; };
 		0198506E16BA151800694D69 /* FFCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198506D16BA151800694D69 /* FFCity.m */; };
 		0198507216BA290900694D69 /* FFCoreDataAppDelegate+FFCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198507116BA290900694D69 /* FFCoreDataAppDelegate+FFCoreData.m */; };
+		0198507616BA2DEE00694D69 /* FFCDUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198507516BA2DEE00694D69 /* FFCDUserProfile.m */; };
+		0198507916BA2E3400694D69 /* FFCDCity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0198507816BA2E3400694D69 /* FFCDCity.m */; };
 		01DD8E5616B5D944007AE08F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5516B5D944007AE08F /* UIKit.framework */; };
 		01DD8E5816B5D944007AE08F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5716B5D944007AE08F /* Foundation.framework */; };
 		01DD8E5A16B5D944007AE08F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5916B5D944007AE08F /* CoreGraphics.framework */; };
@@ -58,6 +60,10 @@
 		0198506F16BA21E000694D69 /* FFCoreData 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FFCoreData 2.xcdatamodel"; sourceTree = "<group>"; };
 		0198507016BA290900694D69 /* FFCoreDataAppDelegate+FFCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FFCoreDataAppDelegate+FFCoreData.h"; sourceTree = "<group>"; };
 		0198507116BA290900694D69 /* FFCoreDataAppDelegate+FFCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FFCoreDataAppDelegate+FFCoreData.m"; sourceTree = "<group>"; };
+		0198507416BA2DEE00694D69 /* FFCDUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCDUserProfile.h; sourceTree = "<group>"; };
+		0198507516BA2DEE00694D69 /* FFCDUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCDUserProfile.m; sourceTree = "<group>"; };
+		0198507716BA2E3400694D69 /* FFCDCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCDCity.h; sourceTree = "<group>"; };
+		0198507816BA2E3400694D69 /* FFCDCity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCDCity.m; sourceTree = "<group>"; };
 		01DD8E5116B5D944007AE08F /* FFCoreData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFCoreData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01DD8E5516B5D944007AE08F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01DD8E5716B5D944007AE08F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -132,6 +138,10 @@
 		0198506516B9C4F400694D69 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				0198507716BA2E3400694D69 /* FFCDCity.h */,
+				0198507816BA2E3400694D69 /* FFCDCity.m */,
+				0198507416BA2DEE00694D69 /* FFCDUserProfile.h */,
+				0198507516BA2DEE00694D69 /* FFCDUserProfile.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -356,6 +366,8 @@
 				0198506816B9C6B900694D69 /* FFCoreDataUtils.m in Sources */,
 				0198506E16BA151800694D69 /* FFCity.m in Sources */,
 				0198507216BA290900694D69 /* FFCoreDataAppDelegate+FFCoreData.m in Sources */,
+				0198507616BA2DEE00694D69 /* FFCDUserProfile.m in Sources */,
+				0198507916BA2E3400694D69 /* FFCDCity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
