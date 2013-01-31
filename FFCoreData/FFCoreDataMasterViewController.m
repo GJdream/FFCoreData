@@ -101,7 +101,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
   if (!self.detailViewController) {
-    self.detailViewController = [[FFCoreDataDetailViewController alloc] initWithNibName:@"CWDetailViewController" bundle:nil];
+    self.detailViewController = [[FFCoreDataDetailViewController alloc] initWithNibName:@"FFCoreDataDetailViewController" bundle:nil];
   }
 
   NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
