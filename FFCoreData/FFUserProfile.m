@@ -27,8 +27,6 @@ NSString * const FFUserProfileMetaKey             = @"FFUserProfileMetaKey";
 
   FFMetaData *metaData = [[FatFractal main] metaDataForObj:self];
 
-  NSLog(@"metaData with encode: %@", metaData);
-
   self.metaData = metaData;
 
   [encoder encodeObject:self.metaData forKey:FFUserProfileFFCityKey];
@@ -46,7 +44,6 @@ NSString * const FFUserProfileMetaKey             = @"FFUserProfileMetaKey";
     self.metaData     = [decoder decodeObjectForKey:FFUserProfileMetaKey];
 
     if (self.metaData) {
-        NSLog(@"metaData after init: %@", self.metaData);
       [[FatFractal main] setMetaData:self.metaData forObj:self];
     }
   }
