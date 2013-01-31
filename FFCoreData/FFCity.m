@@ -9,7 +9,11 @@
 #import "FFCity.h"
 
 NSString * const FFCityNameKey = @"FFCityNameKey";
-NSString * const FFCityFilePrefix = @"FFCity-";
+NSString * const FFCityMetaKey = @"FFCityMetaKey";
+
+@interface FFCity()
+@property (nonatomic, strong) FFMetaData *metaData;
+@end
 
 @implementation FFCity
 
@@ -19,9 +23,9 @@ NSString * const FFCityFilePrefix = @"FFCity-";
 
   FFMetaData *metaData = [[FatFractal main] metaDataForObj:self];
 
-  NSString *filename = [NSString stringWithFormat:@"%@-%@", FFCityFilePrefix, metaData.guid];
+  self.metaData = metaData;
 
-  [FFCoreDataUtils persistObject:metaData atFilename:filename];
+  [encoder encodeObject:self.metaData forKey:FFCityMetaKey];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
@@ -30,12 +34,11 @@ NSString * const FFCityFilePrefix = @"FFCity-";
 
   if (self) {
 
-    self.name = [decoder decodeObjectForKey:FFCityNameKey];
+    self.name     = [decoder decodeObjectForKey:FFCityNameKey];
+    self.metaData = [decoder decodeObjectForKey:FFCityMetaKey];
 
-    FFMetaData *metaData = (FFMetaData *)[FFCoreDataUtils loadObjectFromFilename:FFCityFilePrefix];
-
-    if (metaData) {
-      [[FatFractal main] setMetaData:metaData forObj:self];
+    if (self.metaData) {
+      [[FatFractal main] setMetaData:self.metaData forObj:self];
     }
   }
   

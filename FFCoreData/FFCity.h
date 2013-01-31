@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSString * const FFCityNameKey;
-extern NSString * const FFCityFilePrefix;
+extern NSString * const FFCityMetaKey;
 
 @interface FFCity : NSObject <NSCoding>
 

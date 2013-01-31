@@ -11,7 +11,7 @@
 extern NSString * const FFUserProfileUserKey;
 extern NSString * const FFUserProfileUserRandomStringKey;
 extern NSString * const FFUserProfileFFCityKey;
-extern NSString * const FFUserProfileUserFilePrefix;
+extern NSString * const FFUserProfileMetaKey;
 
 @class FFCity;
 
