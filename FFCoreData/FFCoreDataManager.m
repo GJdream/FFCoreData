@@ -41,6 +41,7 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 - (BOOL)save {
 
 	if (![self.mainObjectContext hasChanges]) {
+    NSLog(@"no changes found");
 		return YES;
   }
 
@@ -52,13 +53,15 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
     [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveFailedNotification
                                                         object:error];
+        NSLog(@"error notification");
 		return NO;
 	}
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveNotification
                                                       object:nil];
+  NSLog(@"success save notification");
 
-	return YES;
+  return YES;
 }
 
 - (NSManagedObjectModel*)objectModel {
