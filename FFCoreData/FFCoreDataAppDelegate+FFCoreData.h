@@ -11,5 +11,7 @@
 @interface FFCoreDataAppDelegate (FFCoreData)
 
 + (BOOL)isFirstSync;
++ (NSDate *)lastSyncDate;
++ (void)saveLastSyncDate:(NSDate *)date;
 
 @end

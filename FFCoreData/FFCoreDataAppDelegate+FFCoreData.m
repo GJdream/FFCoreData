@@ -14,4 +14,15 @@
   return [[NSUserDefaults standardUserDefaults] boolForKey:FFCoreDataAppFirstSyncKey];
 }
 
++ (NSDate *)lastSyncDate {
+  return [[NSUserDefaults standardUserDefaults] valueForKey:FFCoreDataAppLastSyncKey];
+}
+
++ (void)saveLastSyncDate:(NSDate *)date {
+
+  [[NSUserDefaults standardUserDefaults] setObject:date
+                                            forKey:FFCoreDataAppLastSyncKey];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 @end
