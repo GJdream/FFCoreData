@@ -10,7 +10,7 @@
 
 @interface FFCoreDataAppDelegate (FFCoreData)
 
-+ (NSDate *)lastSyncDate;
-+ (void)saveLastSyncDate:(NSDate *)date;
++ (double)lastSyncDate;
++ (void)saveLastSyncDate:(double)ts;
 
 @end
