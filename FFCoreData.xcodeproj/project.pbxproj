@@ -25,9 +25,7 @@
 		01DD8E6E16B5D944007AE08F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 01DD8E6D16B5D944007AE08F /* Default-568h@2x.png */; };
 		01DD8E7116B5D944007AE08F /* FFCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 01DD8E6F16B5D944007AE08F /* FFCoreData.xcdatamodeld */; };
 		01DD8E7416B5D944007AE08F /* FFCoreDataMasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DD8E7316B5D944007AE08F /* FFCoreDataMasterViewController.m */; };
-		01DD8E7716B5D944007AE08F /* FFCoreDataDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 01DD8E7616B5D944007AE08F /* FFCoreDataDetailViewController.m */; };
 		01DD8E7A16B5D944007AE08F /* FFCoreDataMasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01DD8E7816B5D944007AE08F /* FFCoreDataMasterViewController.xib */; };
-		01DD8E7D16B5D944007AE08F /* FFCoreDataDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01DD8E7B16B5D944007AE08F /* FFCoreDataDetailViewController.xib */; };
 		01DD8E8516B5D944007AE08F /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E8416B5D944007AE08F /* SenTestingKit.framework */; };
 		01DD8E8616B5D944007AE08F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5516B5D944007AE08F /* UIKit.framework */; };
 		01DD8E8716B5D944007AE08F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01DD8E5716B5D944007AE08F /* Foundation.framework */; };
@@ -65,9 +63,9 @@
 		0198507716BA2E3400694D69 /* FFCDCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCDCity.h; sourceTree = "<group>"; };
 		0198507816BA2E3400694D69 /* FFCDCity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFCDCity.m; sourceTree = "<group>"; };
 		0198507A16BA347700694D69 /* FatFractal+FFCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FatFractal+FFCoreData.h"; sourceTree = "<group>"; };
-		01B9EB1C16BB0430008E4357 /* FFCoreData 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FFCoreData 3.xcdatamodel"; sourceTree = "<group>"; };
-		01B9EB1D16BB0930008E4357 /* FFCoreData 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FFCoreData 4.xcdatamodel"; sourceTree = "<group>"; };
-		01B9EB1E16BB0CF4008E4357 /* FFCoreData 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = "FFCoreData 5.xcdatamodel"; sourceTree = "<group>"; };
+		01B9EB1C16BB0430008E4357 /* FFCoreData 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FFCoreData 3.xcdatamodel"; sourceTree = "<group>"; };
+		01B9EB1D16BB0930008E4357 /* FFCoreData 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FFCoreData 4.xcdatamodel"; sourceTree = "<group>"; };
+		01B9EB1E16BB0CF4008E4357 /* FFCoreData 5.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "FFCoreData 5.xcdatamodel"; sourceTree = "<group>"; };
 		01DD8E5116B5D944007AE08F /* FFCoreData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFCoreData.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01DD8E5516B5D944007AE08F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		01DD8E5716B5D944007AE08F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -85,10 +83,7 @@
 		01DD8E7016B5D944007AE08F /* FFCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = FFCoreData.xcdatamodel; sourceTree = "<group>"; };
 		01DD8E7216B5D944007AE08F /* FFCoreDataMasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFCoreDataMasterViewController.h; sourceTree = "<group>"; };
 		01DD8E7316B5D944007AE08F /* FFCoreDataMasterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFCoreDataMasterViewController.m; sourceTree = "<group>"; };
-		01DD8E7516B5D944007AE08F /* FFCoreDataDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFCoreDataDetailViewController.h; sourceTree = "<group>"; };
-		01DD8E7616B5D944007AE08F /* FFCoreDataDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFCoreDataDetailViewController.m; sourceTree = "<group>"; };
 		01DD8E7916B5D944007AE08F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FFCoreDataMasterViewController.xib; sourceTree = "<group>"; };
-		01DD8E7C16B5D944007AE08F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/FFCoreDataDetailViewController.xib; sourceTree = "<group>"; };
 		01DD8E8316B5D944007AE08F /* FFCoreDataTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FFCoreDataTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01DD8E8416B5D944007AE08F /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		01DD8E8D16B5D944007AE08F /* FFCoreDataTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FFCoreDataTests-Info.plist"; sourceTree = "<group>"; };
@@ -127,6 +122,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0181E8D616BB1EF7005B4DA6 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				01DD8EA316B5DA6F007AE08F /* FFCoreDataManager.h */,
+				01DD8EA416B5DA6F007AE08F /* FFCoreDataManager.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		0181E8D716BB1F04005B4DA6 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				0198506616B9C6B900694D69 /* FFCoreDataUtils.h */,
+				0198506716B9C6B900694D69 /* FFCoreDataUtils.m */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		0181E8D816BB1F0D005B4DA6 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				01DD8E7216B5D944007AE08F /* FFCoreDataMasterViewController.h */,
+				01DD8E7316B5D944007AE08F /* FFCoreDataMasterViewController.m */,
+				01DD8E7816B5D944007AE08F /* FFCoreDataMasterViewController.xib */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		0198506416B9C4EC00694D69 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,23 +218,16 @@
 		01DD8E5D16B5D944007AE08F /* FFCoreData */ = {
 			isa = PBXGroup;
 			children = (
-				01DD8E6F16B5D944007AE08F /* FFCoreData.xcdatamodeld */,
 				0198507316BA298200694D69 /* Categories */,
+				0181E8D816BB1F0D005B4DA6 /* Controllers */,
+				01DD8E6F16B5D944007AE08F /* FFCoreData.xcdatamodeld */,
 				01DD8E6616B5D944007AE08F /* FFCoreDataAppDelegate.h */,
 				01DD8E6716B5D944007AE08F /* FFCoreDataAppDelegate.m */,
-				01DD8E7516B5D944007AE08F /* FFCoreDataDetailViewController.h */,
-				01DD8E7616B5D944007AE08F /* FFCoreDataDetailViewController.m */,
-				01DD8E7B16B5D944007AE08F /* FFCoreDataDetailViewController.xib */,
 				0198506916B9C6F800694D69 /* FFCoreDataGlobals.h */,
-				01DD8EA316B5DA6F007AE08F /* FFCoreDataManager.h */,
-				01DD8EA416B5DA6F007AE08F /* FFCoreDataManager.m */,
-				01DD8E7216B5D944007AE08F /* FFCoreDataMasterViewController.h */,
-				01DD8E7316B5D944007AE08F /* FFCoreDataMasterViewController.m */,
-				01DD8E7816B5D944007AE08F /* FFCoreDataMasterViewController.xib */,
-				0198506616B9C6B900694D69 /* FFCoreDataUtils.h */,
-				0198506716B9C6B900694D69 /* FFCoreDataUtils.m */,
+				0181E8D616BB1EF7005B4DA6 /* Managers */,
 				0198506416B9C4EC00694D69 /* Models */,
 				01DD8E5E16B5D944007AE08F /* Supporting Files */,
+				0181E8D716BB1F04005B4DA6 /* Utils */,
 			);
 			path = FFCoreData;
 			sourceTree = "<group>";
@@ -326,7 +342,6 @@
 				01DD8E6C16B5D944007AE08F /* Default@2x.png in Resources */,
 				01DD8E6E16B5D944007AE08F /* Default-568h@2x.png in Resources */,
 				01DD8E7A16B5D944007AE08F /* FFCoreDataMasterViewController.xib in Resources */,
-				01DD8E7D16B5D944007AE08F /* FFCoreDataDetailViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,7 +380,6 @@
 				01DD8E6816B5D944007AE08F /* FFCoreDataAppDelegate.m in Sources */,
 				01DD8E7116B5D944007AE08F /* FFCoreData.xcdatamodeld in Sources */,
 				01DD8E7416B5D944007AE08F /* FFCoreDataMasterViewController.m in Sources */,
-				01DD8E7716B5D944007AE08F /* FFCoreDataDetailViewController.m in Sources */,
 				01DD8EA516B5DA6F007AE08F /* FFCoreDataManager.m in Sources */,
 				0198506316B9C4E800694D69 /* FFUserProfile.m in Sources */,
 				0198506816B9C6B900694D69 /* FFCoreDataUtils.m in Sources */,
@@ -410,14 +424,6 @@
 				01DD8E7916B5D944007AE08F /* en */,
 			);
 			name = FFCoreDataMasterViewController.xib;
-			sourceTree = "<group>";
-		};
-		01DD8E7B16B5D944007AE08F /* FFCoreDataDetailViewController.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				01DD8E7C16B5D944007AE08F /* en */,
-			);
-			name = FFCoreDataDetailViewController.xib;
 			sourceTree = "<group>";
 		};
 		01DD8E8E16B5D944007AE08F /* InfoPlist.strings */ = {
