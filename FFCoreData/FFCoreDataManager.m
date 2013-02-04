@@ -38,6 +38,30 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
   return _defaultManager;
 }
 
+- (void)deleteAllObjects:(NSString *)entityDescription {
+
+  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+  NSEntityDescription *entity  = [NSEntityDescription entityForName:entityDescription
+                                             inManagedObjectContext:self.mainObjectContext];
+
+  [fetchRequest setEntity:entity];
+
+  NSError *error;
+  NSArray *items = [self.mainObjectContext executeFetchRequest:fetchRequest
+                                                         error:&error];
+
+  for (NSManagedObject *managedObject in items) {
+
+    [self.mainObjectContext deleteObject:managedObject];
+
+    NSLog(@"%@ object deleted",entityDescription);
+  }
+
+  if (![self.mainObjectContext save:&error]) {
+    NSLog(@"Error deleting %@ - error:%@",entityDescription,error);
+  }
+}
+
 - (BOOL)save {
 
 	if (![self.mainObjectContext hasChanges]) {
@@ -53,13 +77,15 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
     [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveFailedNotification
                                                         object:error];
-        NSLog(@"error notification");
 		return NO;
 	}
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveNotification
-                                                      object:nil];
-  NSLog(@"success save notification");
+  NSLog(@"should be saving to notification");
+
+  dispatch_async(dispatch_get_main_queue(), ^{
+    [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveNotification
+                                                        object:nil];
+  });
 
   return YES;
 }

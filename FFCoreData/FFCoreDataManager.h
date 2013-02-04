@@ -21,5 +21,6 @@ extern NSString * const FFCoreDataManagerDidSaveFailedNotification;
 + (FFCoreDataManager *)sharedManager;
 - (BOOL)save;
 - (NSManagedObjectContext*)managedObjectContext;
+- (void)deleteAllObjects:(NSString *)entityDescription;
 
 @end
