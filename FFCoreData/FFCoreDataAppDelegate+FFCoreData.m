@@ -10,13 +10,13 @@
 
 @implementation FFCoreDataAppDelegate (FFCoreData)
 
-+ (NSDate *)lastSyncDate {
-  return [[NSUserDefaults standardUserDefaults] valueForKey:FFCoreDataAppLastSyncKey];
++ (double)lastSyncDate {
+  return [[NSUserDefaults standardUserDefaults] doubleForKey:FFCoreDataAppLastSyncKey];
 }
 
-+ (void)saveLastSyncDate:(NSDate *)date {
++ (void)saveLastSyncDate:(double)ts {
 
-  [[NSUserDefaults standardUserDefaults] setObject:date
+  [[NSUserDefaults standardUserDefaults] setDouble:ts
                                             forKey:FFCoreDataAppLastSyncKey];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
