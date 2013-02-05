@@ -7,7 +7,6 @@
 //
 
 #import "FFCoreDataMasterViewController.h"
-#import "FFCoreDataDetailViewController.h"
 
 #import "FFUserProfile.h"
 #import "FFCity.h"
@@ -23,12 +22,16 @@
 - (void)persistFFObject:(id)obj;
 @end
 
-@implementation FFCoreDataMasterViewController
+@implementation FFCoreDataMasterViewController {
+  id _notificationObserverSave;
+  id _notificationObserverSaveError;
+}
 
 @synthesize fetchedResultsController = _fetchedResultsController;
 
 - (void)dealloc {
-
+  [[NSNotificationCenter defaultCenter] removeObserver:_notificationObserverSave];
+  [[NSNotificationCenter defaultCenter] removeObserver:_notificationObserverSaveError];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -50,7 +53,28 @@
 }
 							
 - (void)viewDidLoad {
+
   [super viewDidLoad];
+
+  _notificationObserverSave = [[NSNotificationCenter defaultCenter] addObserverForName:FFCoreDataManagerDidSaveNotification
+                                                                                object:nil
+                                                                                 queue:nil
+                                                                            usingBlock:^(NSNotification *note) {
+
+                                                                              double ts = [[NSDate date] timeIntervalSince1970] * 1000;
+
+                                                                              [FFCoreDataAppDelegate saveLastSyncDate:ts];
+//                                                                              [NSFetchedResultsController deleteCacheWithName:@"FFCDUserProfile"];
+//                                                                              [self.tableView reloadData];
+                                                                            }];
+
+  _notificationObserverSaveError = [[NSNotificationCenter defaultCenter] addObserverForName:FFCoreDataManagerDidSaveFailedNotification
+                                                                                     object:nil
+                                                                                      queue:nil
+                                                                                 usingBlock:^(NSNotification *note) {
+//                                                                                   NSLog(@"Error while saving: %@\n%@", [error localizedDescription], [error userInfo]);
+// @todo show alert
+                                                                                 }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -61,30 +85,75 @@
 
   [super viewWillAppear:animated];
 
-  [NSFetchedResultsController deleteCacheWithName:nil];
+  // this will be come the 'initial data import'
+  if (![FFCoreDataAppDelegate lastSyncDate]) {
 
-//  if (![FFCoreDataAppDelegate lastSyncDate]) {
-//
-//    [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
-//
-//      NSArray *profiles = (NSArray *)obj;
-//
-//      NSLog(@"profiles: %@", profiles);
-//
-//      [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
-//        [self persistFFObject:obj];
-//      }];
-//    }];
-//  }
+    [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
 
-	NSError *error = nil;
+      NSArray *profiles = (NSArray *)obj;
 
-  if (![self.fetchedResultsController performFetch:&error]) {
-    // Replace this implementation with code to handle the error appropriately.
-    NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-    abort();
+      NSLog(@"profiles from intial fetch: %@", profiles);
 
-	} else {
+      [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+        [self persistFFObject:obj];
+      }];
+    }];
+
+    NSError *error;
+
+    [NSFetchedResultsController deleteCacheWithName:@"FFCDUserProfile"];
+
+    if (![self.fetchedResultsController performFetch:&error]) {
+
+      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+
+      abort();
+    }
+
+    [self.tableView reloadData];
+
+  } else {
+
+    [NSFetchedResultsController deleteCacheWithName:@"FFCDUserProfile"];
+
+    NSError *error = nil;
+
+    if (![self.fetchedResultsController performFetch:&error]) {
+
+      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+
+      abort();
+    }
+
+    /**
+     * @todo
+     * will _eventual_ add in logic to query webservice for data that has been
+     * updated since last check.
+     *
+     * Need to separate this out better
+     */
+    double ts = [FFCoreDataAppDelegate lastSyncDate];
+
+    /**
+     * ::NOTE::
+     *
+     * This will _only_ get new items.
+     */
+
+    NSString *endPoint = [NSString stringWithFormat:@"/UserProfiles/(updatedAt gt %f)", ts];
+
+    NSLog(@"endpoint: %@", endPoint);
+
+    [self.ff getArrayFromUri:endPoint onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
+
+      NSArray *profiles = (NSArray *)obj;
+
+      NSLog(@"profiles to check for new information: %@", profiles);
+
+      [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+        [self persistFFObject:obj];
+      }];
+    }];
 
     [self.tableView reloadData];
   }
@@ -121,19 +190,6 @@
   return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
-  if (!self.detailViewController) {
-    self.detailViewController = [[FFCoreDataDetailViewController alloc] initWithNibName:@"FFCoreDataDetailViewController" bundle:nil];
-  }
-
-  NSManagedObject *object = [[self fetchedResultsController] objectAtIndexPath:indexPath];
-
-  self.detailViewController.detailItem = object;
-
-  [self.navigationController pushViewController:self.detailViewController animated:YES];
-}
-
 #pragma mark - Fetched results controller
 
 - (NSFetchedResultsController *)fetchedResultsController {
@@ -144,18 +200,19 @@
 
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
   NSEntityDescription *entity = [NSEntityDescription entityForName:@"FFCDUserProfile"
-                                            inManagedObjectContext:self.managedObjectContext];
+                                            inManagedObjectContext:[[FFCoreDataManager sharedManager] mainObjectContext]];
 
   NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"sortDesc"
                                                        ascending:NO];
 
   [fetchRequest setEntity:entity];
+  [fetchRequest setShouldRefreshRefetchedObjects:YES];
   [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
   [fetchRequest setFetchBatchSize:20];
 
   NSFetchedResultsController *theFetchedResultsController =
   [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                      managedObjectContext:self.managedObjectContext
+                                      managedObjectContext:[[FFCoreDataManager sharedManager] mainObjectContext]
                                         sectionNameKeyPath:nil
                                                  cacheName:@"FFCDUserProfile"];
 
@@ -167,7 +224,7 @@
 }
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
-    [self.tableView beginUpdates];
+  [self.tableView beginUpdates];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
