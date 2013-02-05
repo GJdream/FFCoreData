@@ -51,4 +51,8 @@ NSString * const FFUserProfileMetaKey             = @"FFUserProfileMetaKey";
   return self;
 }
 
+- (NSString *)description {
+  return [NSString stringWithFormat:@"user %@, randomCode: %@, metaData: %@", self.user, self.randomCode, self.metaData];
+}
+
 @end
