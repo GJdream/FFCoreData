@@ -75,8 +75,11 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
 		NSLog(@"Error while saving: %@\n%@", [error localizedDescription], [error userInfo]);
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveFailedNotification
-                                                        object:error];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveFailedNotification
+                                                          object:error];
+    });
+
 		return NO;
 	}
 
