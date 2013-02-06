@@ -16,8 +16,6 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
 @interface FFCoreDataManager()
 
-@property (nonatomic, strong) NSManagedObjectContext *privateWriterContext;
-
 - (NSString *)sharedDocumentsPath;
 
 @end
@@ -25,7 +23,7 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 @implementation FFCoreDataManager
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-@synthesize mainManagedObjectContext          = _mainObjectContext;
+@synthesize mainManagedObjectContext   = _mainManagedObjectContext;
 @synthesize objectModel                = _objectModel;
 
 + (FFCoreDataManager *)sharedManager {
@@ -150,19 +148,17 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
   }];
 }
 
-- (BOOL)saveWithChildContext:(NSManagedObjectContext *)childContext
+- (void)saveWithChildContext:(NSManagedObjectContext *)childContext
            childContextBlock:(void(^)())block
                   shouldWait:(BOOL)wait {
 
   if (!childContext) {
-    return NO;
+    return;
   }
 
-  if (self.mainManagedObjectContext == childContext) {
-    return NO;
+  if (self.privateWriterContext == childContext) {
+    return;
   }
-
-  childContext.parentContext = self.mainManagedObjectContext;
 
   void (^saveChild) (void) = ^{
 
@@ -201,8 +197,6 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
   } else {
     [childContext performBlock:saveChild];
   }
-  
-  return YES;
 }
 
 - (NSManagedObjectModel*)objectModel {
@@ -265,23 +259,10 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 	return _persistentStoreCoordinator;
 }
 
-- (NSManagedObjectContext *)privateWriterContext {
-
-  if (_privateWriterContext) {
-    return _privateWriterContext;
-  }
-
-  _privateWriterContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-
-  [_privateWriterContext setPersistentStoreCoordinator:_persistentStoreCoordinator];
-
-  return _privateWriterContext;
-}
-
 - (NSManagedObjectContext*)mainManagedObjectContext {
 
-	if (_mainObjectContext) {
-		return _mainObjectContext;
+	if (_mainManagedObjectContext) {
+		return _mainManagedObjectContext;
   }
 
 	/**
@@ -294,17 +275,30 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
       [self mainManagedObjectContext];
     });
 
-    return _mainObjectContext;
+    return _mainManagedObjectContext;
 	}
 
-	_mainObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+	_mainManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
 
-  _mainObjectContext.parentContext = self.privateWriterContext;
+  _mainManagedObjectContext.parentContext = self.privateWriterContext;
   
-	return _mainObjectContext;
+	return _mainManagedObjectContext;
 }
 
 #pragma mark - Private Methods
+
+- (NSManagedObjectContext *)privateWriterContext {
+
+  if (_privateWriterContext) {
+    return _privateWriterContext;
+  }
+
+  _privateWriterContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+
+  [_privateWriterContext setPersistentStoreCoordinator:_persistentStoreCoordinator];
+
+  return _privateWriterContext;
+}
 
 - (NSString*)sharedDocumentsPath {
 
