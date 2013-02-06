@@ -165,9 +165,6 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
 	if (![NSThread isMainThread]) {
 
-//		[self performSelectorOnMainThread:@selector(mainObjectContext)
-//                           withObject:nil
-//                        waitUntilDone:YES];
     dispatch_async(dispatch_get_main_queue(), ^{
       [self mainObjectContext];
     });
