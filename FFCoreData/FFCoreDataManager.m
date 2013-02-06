@@ -11,8 +11,8 @@
 NSString * const FFCoreDataManagerDidSaveNotification       = @"WNCoreDataManagerDidSaveNotification";
 NSString * const FFCoreDataManagerDidSaveFailedNotification = @"WNCoreDataManagerDidSaveFailedNotification";
 
-static NSString *WNCoreManagerModelName  = @"FFCoreData";
-static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
+static NSString *FFCoreDataManagerModelName  = @"FFCoreData";
+static NSString *FFCoreDataManagerSQLiteName = @"FFCoreData.sqlite";
 
 @interface FFCoreDataManager()
 
@@ -208,7 +208,7 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
 	NSBundle *bundle = [NSBundle mainBundle];
 
-	NSString *modelPath = [bundle pathForResource:WNCoreManagerModelName
+	NSString *modelPath = [bundle pathForResource:FFCoreDataManagerModelName
                                          ofType:@"momd"];
 
   _objectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:[NSURL fileURLWithPath:modelPath]];
@@ -226,7 +226,7 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
    * Get the paths to the SQLite file
    */
 
-	NSString *storePath = [[self sharedDocumentsPath] stringByAppendingPathComponent:WNCoreManagerSQLiteName];
+	NSString *storePath = [[self sharedDocumentsPath] stringByAppendingPathComponent:FFCoreDataManagerSQLiteName];
 	NSURL *storeURL     = [NSURL fileURLWithPath:storePath];
 
 	/**
