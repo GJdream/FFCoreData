@@ -42,8 +42,8 @@
 
     self.title = NSLocalizedString(@"Master", @"Master");
 
-    _ff = [[FatFractal alloc] initWithBaseUrl:@"http://cory.fatfractal.com/coredata/"
-                                       sslUrl:@"https://cory.fatfractal.com/coredata/"];
+    _ff = [[FatFractal alloc] initWithBaseUrl:@"http://localhost:8989/coredata/"
+                                       sslUrl:@"https://localhost:9898/coredata/"];
 
     [_ff registerClass:[FFUserProfile class] forClazz:@"CDProfile"];
     [_ff registerClass:[FFCity class] forClazz:@"CDCity"];
@@ -61,18 +61,18 @@
                                                                                  queue:nil
                                                                             usingBlock:^(NSNotification *note) {
 
+                                                                              NSLog(@"notification from save: %@", note);
+
                                                                               double ts = [[NSDate date] timeIntervalSince1970] * 1000;
 
                                                                               [FFCoreDataAppDelegate saveLastSyncDate:ts];
-//                                                                              [NSFetchedResultsController deleteCacheWithName:@"FFCDUserProfile"];
-//                                                                              [self.tableView reloadData];
                                                                             }];
 
   _notificationObserverSaveError = [[NSNotificationCenter defaultCenter] addObserverForName:FFCoreDataManagerDidSaveFailedNotification
                                                                                      object:nil
                                                                                       queue:nil
                                                                                  usingBlock:^(NSNotification *note) {
-//                                                                                   NSLog(@"Error while saving: %@\n%@", [error localizedDescription], [error userInfo]);
+                                                                                   NSLog(@"Error while saving: %@ %@", note, [note userInfo]);
 // @todo show alert
                                                                                  }];
 }
@@ -85,7 +85,6 @@
 
   [super viewWillAppear:animated];
 
-  // this will be come the 'initial data import'
   if (![FFCoreDataAppDelegate lastSyncDate]) {
 
     [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
@@ -101,8 +100,6 @@
 
     NSError *error;
 
-    [NSFetchedResultsController deleteCacheWithName:@"FFCDUserProfile"];
-
     if (![self.fetchedResultsController performFetch:&error]) {
 
       NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
@@ -113,8 +110,6 @@
     [self.tableView reloadData];
 
   } else {
-
-    [NSFetchedResultsController deleteCacheWithName:@"FFCDUserProfile"];
 
     NSError *error = nil;
 
@@ -132,6 +127,7 @@
      *
      * Need to separate this out better
      */
+
     double ts = [FFCoreDataAppDelegate lastSyncDate];
 
     /**
@@ -150,7 +146,7 @@
 
       NSLog(@"profiles to check for new information: %@", profiles);
 
-      [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+      [profiles enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop){
         [self persistFFObject:obj];
       }];
     }];
@@ -200,7 +196,7 @@
 
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
   NSEntityDescription *entity = [NSEntityDescription entityForName:@"FFCDUserProfile"
-                                            inManagedObjectContext:[[FFCoreDataManager sharedManager] mainObjectContext]];
+                                            inManagedObjectContext:[[FFCoreDataManager sharedManager] mainManagedObjectContext]];
 
   NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"sortDesc"
                                                        ascending:NO];
@@ -212,9 +208,9 @@
 
   NSFetchedResultsController *theFetchedResultsController =
   [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                      managedObjectContext:[[FFCoreDataManager sharedManager] mainObjectContext]
+                                      managedObjectContext:[[FFCoreDataManager sharedManager] mainManagedObjectContext]
                                         sectionNameKeyPath:nil
-                                                 cacheName:@"FFCDUserProfile"];
+                                                 cacheName:nil];
 
   self.fetchedResultsController = theFetchedResultsController;
 
@@ -233,11 +229,15 @@
      forChangeType:(NSFetchedResultsChangeType)type {
     switch(type) {
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertSections:[NSIndexSet
+                                            indexSetWithIndex:sectionIndex]
+                          withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView deleteSections:[NSIndexSet
+                                            indexSetWithIndex:sectionIndex]
+                          withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
 }
@@ -252,20 +252,25 @@
     
     switch(type) {
         case NSFetchedResultsChangeInsert:
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:@[newIndexPath]
+                             withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView deleteRowsAtIndexPaths:@[indexPath]
+                             withRowAnimation:UITableViewRowAnimationFade];
             break;
             
         case NSFetchedResultsChangeUpdate:
-            [self configureCell:[tableView cellForRowAtIndexPath:indexPath] atIndexPath:indexPath];
+            [self configureCell:[tableView cellForRowAtIndexPath:indexPath]
+                    atIndexPath:indexPath];
             break;
             
         case NSFetchedResultsChangeMove:
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [tableView deleteRowsAtIndexPaths:@[indexPath]
+                             withRowAnimation:UITableViewRowAnimationFade];
+            [tableView insertRowsAtIndexPaths:@[newIndexPath]
+                             withRowAnimation:UITableViewRowAnimationFade];
             break;
     }
 }
@@ -301,20 +306,24 @@
   NSData *dataOnObjectProfile = [NSKeyedArchiver archivedDataWithRootObject:profile];
   NSData *dataOnObjectCity    = [NSKeyedArchiver archivedDataWithRootObject:profile.homeCity];
 
-  NSManagedObjectContext *context = [FFCoreDataManager sharedManager].mainObjectContext;
+  NSManagedObjectContext *temporaryContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
   NSManagedObject *profileMO      = [NSEntityDescription insertNewObjectForEntityForName:@"FFCDUserProfile"
-                                                                  inManagedObjectContext:context];
+                                                                  inManagedObjectContext:temporaryContext];
   NSManagedObject *ffcityMO       = [NSEntityDescription insertNewObjectForEntityForName:@"FFCDCity"
-                                                                  inManagedObjectContext:context];
+                                                                  inManagedObjectContext:temporaryContext];
 
   [profileMO setValue:dataOnObjectProfile forKey:@"ffuserProfile"];
   [profileMO setValue:ffcityMO forKey:@"city"];
-  [profileMO setValue:profile.homeCity.name forKey:@"sortDesc"];
+  [profileMO setValue:profile.user.userName forKey:@"sortDesc"];
 
   [ffcityMO setValue:dataOnObjectCity forKey:@"ffcity"];
   [ffcityMO setValue:profileMO forKey:@"profile"];
 
-  [[FFCoreDataManager sharedManager] save];
+  [[FFCoreDataManager sharedManager] saveWithChildContext:temporaryContext
+                                        childContextBlock:^{
+                                          NSLog(@"this should be a really long wait");
+                                        }
+                                               shouldWait:NO];
 }
 
 @end
