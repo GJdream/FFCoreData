@@ -16,6 +16,8 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
 @interface FFCoreDataManager()
 
+@property (nonatomic, strong) NSManagedObjectContext *privateWriterContext;
+
 - (NSString *)sharedDocumentsPath;
 
 @end
@@ -23,7 +25,7 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 @implementation FFCoreDataManager
 
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-@synthesize mainObjectContext          = _mainObjectContext;
+@synthesize mainManagedObjectContext          = _mainObjectContext;
 @synthesize objectModel                = _objectModel;
 
 + (FFCoreDataManager *)sharedManager {
@@ -42,54 +44,164 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
   NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
   NSEntityDescription *entity  = [NSEntityDescription entityForName:entityDescription
-                                             inManagedObjectContext:self.mainObjectContext];
+                                             inManagedObjectContext:self.mainManagedObjectContext];
 
   [fetchRequest setEntity:entity];
 
   NSError *error;
-  NSArray *items = [self.mainObjectContext executeFetchRequest:fetchRequest
+  NSArray *items = [self.mainManagedObjectContext executeFetchRequest:fetchRequest
                                                          error:&error];
 
   for (NSManagedObject *managedObject in items) {
 
-    [self.mainObjectContext deleteObject:managedObject];
+    [self.mainManagedObjectContext deleteObject:managedObject];
 
     NSLog(@"%@ object deleted",entityDescription);
   }
 
-  if (![self.mainObjectContext save:&error]) {
+  if (![self.mainManagedObjectContext save:&error]) {
     NSLog(@"Error deleting %@ - error:%@",entityDescription,error);
   }
 }
 
-- (BOOL)save {
+- (void)saveContext:(BOOL)wait {
 
-	if (![self.mainObjectContext hasChanges]) {
-    NSLog(@"no changes found");
-		return YES;
+  if (![self.mainManagedObjectContext hasChanges]) {
+    return;
   }
 
-	NSError *error = nil;
+  [self.mainManagedObjectContext performBlock:^{
 
-	if (![self.mainObjectContext save:&error]) {
+    /**
+     * Push the mainContextObject to the parent for asynchronous writing.
+     *
+     * @see
+     * http://www.cocoanetics.com/2012/07/multi-context-coredata/
+     */
 
-		NSLog(@"Error while saving: %@\n%@", [error localizedDescription], [error userInfo]);
+    NSError *error;
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-      [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveFailedNotification
-                                                          object:error];
-    });
+    if (![self.mainManagedObjectContext save:&error]) {
 
-		return NO;
-	}
+      NSDictionary *errorNotificationMainContextInfo = @{@"context" : @"mainManagedObjectContext"};
 
-  NSLog(@"should be saving to notification");
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveFailedNotification
+                                                            object:error
+                                                          userInfo:errorNotificationMainContextInfo];
+      });
 
-  dispatch_async(dispatch_get_main_queue(), ^{
-    [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveNotification
-                                                        object:nil];
-  });
+    } else {
 
+      NSDictionary *saveNotificationMainContextInfo = @{@"context" : @"mainManagedObjectContext"};
+
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveNotification
+                                                            object:nil
+                                                          userInfo:saveNotificationMainContextInfo];
+      });
+    }
+
+    void (^savePrivate) (void) = ^{
+
+      NSError *error = nil;
+
+      if (![self.privateWriterContext save:&error]) {
+
+        NSDictionary *errorNotificationPrivateContextInfo = @{@"context" : @"privateWriterContext"};
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveFailedNotification
+                                                              object:error
+                                                            userInfo:errorNotificationPrivateContextInfo];
+        });
+
+      } else {
+
+        NSDictionary *saveNotificationPrivateContextInfo = @{@"context" : @"privateWriterContext"};
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+          [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveNotification
+                                                              object:nil
+                                                            userInfo:saveNotificationPrivateContextInfo];
+        });
+      }
+    };
+
+    /**
+     * However, there are some situations in which we might want to block on 
+     * the save and others where we might want it to be asynchronous. For 
+     * example, when we are going into the background or terminating the 
+     * applica- tion, we will want to block. If we are doing a save while the 
+     * application is still running, we would want to be asynchronous. 
+     * Fortunately, the -saveContext: method accepts a boolean that lets us 
+     * know which method to call.
+     *
+     * @source: CoreData 2nd Edition by Marcus Zarra
+     */
+
+    if ([self.privateWriterContext hasChanges]) {
+      if (wait) {
+        [self.privateWriterContext performBlockAndWait:savePrivate];
+      } else {
+        [self.privateWriterContext performBlock:savePrivate];
+      }
+    }
+  }];
+}
+
+- (BOOL)saveWithChildContext:(NSManagedObjectContext *)childContext
+           childContextBlock:(void(^)())block
+                  shouldWait:(BOOL)wait {
+
+  if (!childContext) {
+    return NO;
+  }
+
+  if (self.mainManagedObjectContext == childContext) {
+    return NO;
+  }
+
+  childContext.parentContext = self.mainManagedObjectContext;
+
+  void (^saveChild) (void) = ^{
+
+    NSError *error = nil;
+
+    if (block) {
+      block();
+    }
+
+    if (![childContext save:&error]) {
+
+      NSDictionary *errorNotificationChildContextInfo = @{@"context" : @"childWriterContext"};
+
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveFailedNotification
+                                                            object:error
+                                                          userInfo:errorNotificationChildContextInfo];
+      });
+
+    } else {
+
+      NSDictionary *saveNotificationChildContextInfo = @{@"context" : @"childWriterContext"};
+
+      dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:FFCoreDataManagerDidSaveNotification
+                                                            object:nil
+                                                          userInfo:saveNotificationChildContextInfo];
+      });
+    }
+
+    [self saveContext:NO];
+  };
+
+  if (wait) {
+    [childContext performBlockAndWait:saveChild];
+  } else {
+    [childContext performBlock:saveChild];
+  }
+  
   return YES;
 }
 
@@ -153,7 +265,20 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 	return _persistentStoreCoordinator;
 }
 
-- (NSManagedObjectContext*)mainObjectContext {
+- (NSManagedObjectContext *)privateWriterContext {
+
+  if (_privateWriterContext) {
+    return _privateWriterContext;
+  }
+
+  _privateWriterContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+
+  [_privateWriterContext setPersistentStoreCoordinator:_persistentStoreCoordinator];
+
+  return _privateWriterContext;
+}
+
+- (NSManagedObjectContext*)mainManagedObjectContext {
 
 	if (_mainObjectContext) {
 		return _mainObjectContext;
@@ -166,26 +291,17 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 	if (![NSThread isMainThread]) {
 
     dispatch_async(dispatch_get_main_queue(), ^{
-      [self mainObjectContext];
+      [self mainManagedObjectContext];
     });
 
     return _mainObjectContext;
 	}
 
-	_mainObjectContext = [[NSManagedObjectContext alloc] init];
+	_mainObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
 
-	[_mainObjectContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
+  _mainObjectContext.parentContext = self.privateWriterContext;
   
 	return _mainObjectContext;
-}
-
-- (NSManagedObjectContext*)managedObjectContext {
-
-	NSManagedObjectContext *ctx = [[NSManagedObjectContext alloc] init];
-
-  [ctx setPersistentStoreCoordinator:self.persistentStoreCoordinator];
-
-	return ctx;
 }
 
 #pragma mark - Private Methods
