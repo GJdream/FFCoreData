@@ -16,8 +16,9 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
 @interface FFCoreDataManager()
 
-- (NSString *)sharedDocumentsPath;
+@property (nonatomic, strong) NSManagedObjectContext *privateWriterContext;
 
+- (NSString *)sharedDocumentsPath;
 @end
 
 @implementation FFCoreDataManager
@@ -295,7 +296,7 @@ static NSString *WNCoreManagerSQLiteName = @"FFCoreData.sqlite";
 
   _privateWriterContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
 
-  [_privateWriterContext setPersistentStoreCoordinator:_persistentStoreCoordinator];
+  [_privateWriterContext setPersistentStoreCoordinator:self.persistentStoreCoordinator];
 
   return _privateWriterContext;
 }
