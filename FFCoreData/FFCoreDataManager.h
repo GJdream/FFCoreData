@@ -17,10 +17,11 @@ extern NSString * const FFCoreDataManagerDidSaveFailedNotification;
 @property (nonatomic, readonly, strong) NSManagedObjectModel *objectModel;
 @property (nonatomic, readonly, strong) NSManagedObjectContext *mainManagedObjectContext;
 @property (nonatomic, readonly, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, strong) NSManagedObjectContext *privateWriterContext;
 
 + (FFCoreDataManager *)sharedManager;
 - (void)saveContext:(BOOL)wait;
-- (BOOL)saveWithChildContext:(NSManagedObjectContext *)childContext
+- (void)saveWithChildContext:(NSManagedObjectContext *)childContext
            childContextBlock:(void(^)())block
                   shouldWait:(BOOL)wait;
 - (void)deleteAllObjects:(NSString *)entityDescription;
