@@ -14,13 +14,14 @@ extern NSString * const FFCoreDataManagerDidSaveFailedNotification;
 
 @interface FFCoreDataManager : NSObject
 
-@property (nonatomic, readonly, retain) NSManagedObjectModel *objectModel;
-@property (nonatomic, readonly, retain) NSManagedObjectContext *mainObjectContext;
-@property (nonatomic, readonly, retain) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+@property (nonatomic, readonly, strong) NSManagedObjectModel *objectModel;
+@property (nonatomic, readonly, strong) NSManagedObjectContext *mainManagedObjectContext;
+@property (nonatomic, readonly, strong) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 + (FFCoreDataManager *)sharedManager;
-- (BOOL)save;
-- (NSManagedObjectContext*)managedObjectContext;
+- (void)saveContext:(BOOL)wait;
+- (BOOL)saveWithChildContext:(NSManagedObjectContext *)childContext
+           childContextBlock:(void(^)())block
+                  shouldWait:(BOOL)wait;
 - (void)deleteAllObjects:(NSString *)entityDescription;
-
 @end
