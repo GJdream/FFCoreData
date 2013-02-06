@@ -21,8 +21,6 @@ NSString * const FFCoreDataAppLastSyncKey  = @"FFCoreDataAppLastSyncKey";
 
   FFCoreDataMasterViewController *masterViewController = [[FFCoreDataMasterViewController alloc] initWithNibName:@"FFCoreDataMasterViewController" bundle:nil];
 
-  masterViewController.managedObjectContext = [FFCoreDataManager sharedManager].mainManagedObjectContext;
-
   self.navigationController = [[UINavigationController alloc] initWithRootViewController:masterViewController];
 
   self.window.rootViewController = self.navigationController;
