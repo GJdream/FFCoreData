@@ -85,74 +85,74 @@
 
   [super viewWillAppear:animated];
 
-//  if (![FFCoreDataAppDelegate lastSyncDate]) {
-//
-//    [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
-//
-//      NSArray *profiles = (NSArray *)obj;
-//
-//      NSLog(@"profiles from intial fetch: %@", profiles);
-//
-//      [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
-//        [self persistFFObject:obj];
-//      }];
-//    }];
-//
-//    NSError *error;
-//
-//    if (![self.fetchedResultsController performFetch:&error]) {
-//
-//      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-//
-//      abort();
-//    }
-//
-//    [self.tableView reloadData];
-//
-//  } else {
-//
-//    NSError *error = nil;
-//
-//    if (![self.fetchedResultsController performFetch:&error]) {
-//
-//      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-//
-//      abort();
-//    }
-//
-//    /**
-//     * @todo
-//     * will _eventual_ add in logic to query webservice for data that has been
-//     * updated since last check.
-//     *
-//     * Need to separate this out better
-//     */
-//
-//    double ts = [FFCoreDataAppDelegate lastSyncDate];
-//
-//    /**
-//     * ::NOTE::
-//     *
-//     * This will _only_ get new items.
-//     */
-//
-//    NSString *endPoint = [NSString stringWithFormat:@"/UserProfiles/(updatedAt gt %f)", ts];
-//
-//    NSLog(@"endpoint: %@", endPoint);
-//
-//    [self.ff getArrayFromUri:endPoint onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
-//
-//      NSArray *profiles = (NSArray *)obj;
-//
-//      NSLog(@"profiles to check for new information: %@", profiles);
-//
-//      [profiles enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop){
-//        [self persistFFObject:obj];
-//      }];
-//    }];
-//
-//    [self.tableView reloadData];
-//  }
+  if (![FFCoreDataAppDelegate lastSyncDate]) {
+
+    [self.ff getArrayFromUri:@"/UserProfiles" onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
+
+      NSArray *profiles = (NSArray *)obj;
+
+      NSLog(@"profiles from intial fetch: %@", profiles);
+
+      [profiles enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+        [self persistFFObject:obj];
+      }];
+    }];
+
+    NSError *error;
+
+    if (![self.fetchedResultsController performFetch:&error]) {
+
+      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+
+      abort();
+    }
+
+    [self.tableView reloadData];
+
+  } else {
+
+    NSError *error = nil;
+
+    if (![self.fetchedResultsController performFetch:&error]) {
+
+      NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+
+      abort();
+    }
+
+    /**
+     * @todo
+     * will _eventual_ add in logic to query webservice for data that has been
+     * updated since last check.
+     *
+     * Need to separate this out better
+     */
+
+    double ts = [FFCoreDataAppDelegate lastSyncDate];
+
+    /**
+     * ::NOTE::
+     *
+     * This will _only_ get new items.
+     */
+
+    NSString *endPoint = [NSString stringWithFormat:@"/UserProfiles/(updatedAt gt %f)", ts];
+
+    NSLog(@"endpoint: %@", endPoint);
+
+    [self.ff getArrayFromUri:endPoint onComplete:^(NSError *err, id obj, NSHTTPURLResponse *httpResponse) {
+
+      NSArray *profiles = (NSArray *)obj;
+
+      NSLog(@"profiles to check for new information: %@", profiles);
+
+      [profiles enumerateObjectsWithOptions:NSEnumerationConcurrent usingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+        [self persistFFObject:obj];
+      }];
+    }];
+
+    [self.tableView reloadData];
+  }
 }
 
 #pragma mark - Table View
@@ -196,27 +196,27 @@
 
   NSLog(@"%@", [[FFCoreDataManager sharedManager] mainManagedObjectContext].persistentStoreCoordinator.managedObjectModel.entities);
 
-//  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-//  NSEntityDescription *entity = [NSEntityDescription entityForName:@"FFCDUserProfile"
-//                                            inManagedObjectContext:[[FFCoreDataManager sharedManager] privateWriterContext]];
-//
-//  NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"sortDesc"
-//                                                       ascending:NO];
-//
-//  [fetchRequest setEntity:entity];
-//  [fetchRequest setShouldRefreshRefetchedObjects:YES];
-//  [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-//  [fetchRequest setFetchBatchSize:20];
-//
-//  NSFetchedResultsController *theFetchedResultsController =
-//  [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-//                                      managedObjectContext:[[FFCoreDataManager sharedManager] privateWriterContext]
-//                                        sectionNameKeyPath:nil
-//                                                 cacheName:nil];
-//
-//  self.fetchedResultsController = theFetchedResultsController;
-//
-//  _fetchedResultsController.delegate = self;
+  NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+  NSEntityDescription *entity = [NSEntityDescription entityForName:@"FFCDUserProfile"
+                                            inManagedObjectContext:[[FFCoreDataManager sharedManager] mainManagedObjectContext]];
+
+  NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"sortDesc"
+                                                       ascending:NO];
+
+  [fetchRequest setEntity:entity];
+  [fetchRequest setShouldRefreshRefetchedObjects:YES];
+  [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
+  [fetchRequest setFetchBatchSize:20];
+
+  NSFetchedResultsController *theFetchedResultsController =
+  [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                      managedObjectContext:[[FFCoreDataManager sharedManager] mainManagedObjectContext]
+                                        sectionNameKeyPath:nil
+                                                 cacheName:nil];
+
+  self.fetchedResultsController = theFetchedResultsController;
+
+  _fetchedResultsController.delegate = self;
 
   return _fetchedResultsController;
 }
@@ -310,27 +310,25 @@
 
   NSManagedObjectContext *temporaryContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
 
-//  temporaryContext.parentContext = [[FFCoreDataManager sharedManager] privateWriterContext];
+  temporaryContext.parentContext = [[FFCoreDataManager sharedManager] mainManagedObjectContext];
 
-//  NSLog(@"%@", [[FFCoreDataManager sharedManager] privateWriterContext].persistentStoreCoordinator.managedObjectModel.entities);
+  NSManagedObject *profileMO      = [NSEntityDescription insertNewObjectForEntityForName:@"FFCDUserProfile"
+                                                                  inManagedObjectContext:temporaryContext];
+  NSManagedObject *ffcityMO       = [NSEntityDescription insertNewObjectForEntityForName:@"FFCDCity"
+                                                                  inManagedObjectContext:temporaryContext];
 
-//  NSManagedObject *profileMO      = [NSEntityDescription insertNewObjectForEntityForName:@"FFCDUserProfile"
-//                                                                  inManagedObjectContext:temporaryContext];
-//  NSManagedObject *ffcityMO       = [NSEntityDescription insertNewObjectForEntityForName:@"FFCDCity"
-//                                                                  inManagedObjectContext:temporaryContext];
-//
-//  [profileMO setValue:dataOnObjectProfile forKey:@"ffuserProfile"];
-//  [profileMO setValue:ffcityMO forKey:@"city"];
-//  [profileMO setValue:profile.user.userName forKey:@"sortDesc"];
-//
-//  [ffcityMO setValue:dataOnObjectCity forKey:@"ffcity"];
-//  [ffcityMO setValue:profileMO forKey:@"profile"];
-//
-//  [[FFCoreDataManager sharedManager] saveWithChildContext:temporaryContext
-//                                        childContextBlock:^{
-//                                          NSLog(@"this should be a really long wait");
-//                                        }
-//                                               shouldWait:NO];
+  [profileMO setValue:dataOnObjectProfile forKey:@"ffuserProfile"];
+  [profileMO setValue:ffcityMO forKey:@"city"];
+  [profileMO setValue:profile.user.userName forKey:@"sortDesc"];
+
+  [ffcityMO setValue:dataOnObjectCity forKey:@"ffcity"];
+  [ffcityMO setValue:profileMO forKey:@"profile"];
+
+  [[FFCoreDataManager sharedManager] saveWithChildContext:temporaryContext
+                                        childContextBlock:^{
+                                          NSLog(@"this should be a really long wait");
+                                        }
+                                               shouldWait:NO];
 }
 
 @end
