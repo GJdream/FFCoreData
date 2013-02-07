@@ -304,6 +304,8 @@
    */
 
   FFUserProfile *profile = (FFUserProfile *)obj;
+  FFMetaData *profileMeta = [[FatFractal main] metaDataForObj:profile];
+  FFMetaData *cityMeta    = [[FatFractal main] metaDataForObj:profile.homeCity];
 
   NSData *dataOnObjectProfile = [NSKeyedArchiver archivedDataWithRootObject:profile];
   NSData *dataOnObjectCity    = [NSKeyedArchiver archivedDataWithRootObject:profile.homeCity];
@@ -320,8 +322,10 @@
   [profileMO setValue:dataOnObjectProfile forKey:@"ffuserProfile"];
   [profileMO setValue:ffcityMO forKey:@"city"];
   [profileMO setValue:profile.user.userName forKey:@"sortDesc"];
+  [profileMO setValue:profileMeta.ffUrl forKey:@"ffurl"];
 
   [ffcityMO setValue:dataOnObjectCity forKey:@"ffcity"];
+  [ffcityMO setValue:cityMeta.ffUrl forKey:@"ffurl"];
   [ffcityMO setValue:profileMO forKey:@"profile"];
 
   [[FFCoreDataManager sharedManager] saveWithChildContext:temporaryContext
