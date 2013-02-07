@@ -48,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0120075F16C32CD900B91CD3 /* V6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = V6.xcdatamodel; sourceTree = "<group>"; };
+		0120076016C3389000B91CD3 /* V7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = V7.xcdatamodel; sourceTree = "<group>"; };
 		0198506116B9C4E800694D69 /* FFUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFUserProfile.h; sourceTree = "<group>"; };
 		0198506216B9C4E800694D69 /* FFUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FFUserProfile.m; sourceTree = "<group>"; };
 		0198506616B9C6B900694D69 /* FFCoreDataUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFCoreDataUtils.h; sourceTree = "<group>"; };
@@ -591,9 +593,11 @@
 				01B9EB1C16BB0430008E4357 /* FFCoreData 3.xcdatamodel */,
 				01B9EB1D16BB0930008E4357 /* FFCoreData 4.xcdatamodel */,
 				01B9EB1E16BB0CF4008E4357 /* FFCoreData 5.xcdatamodel */,
+				0120075F16C32CD900B91CD3 /* V6.xcdatamodel */,
+				0120076016C3389000B91CD3 /* V7.xcdatamodel */,
 				01DD8E7016B5D944007AE08F /* FFCoreData.xcdatamodel */,
 			);
-			currentVersion = 01B9EB1E16BB0CF4008E4357 /* FFCoreData 5.xcdatamodel */;
+			currentVersion = 0120076016C3389000B91CD3 /* V7.xcdatamodel */;
 			path = FFCoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
