@@ -15,5 +15,6 @@
 @property (nonatomic, strong) NSData *ffuserProfile;
 @property (nonatomic, copy) NSString *sortDesc;
 @property (nonatomic, strong) NSManagedObject *city;
+@property (nonatomic, copy) NSString *ffurl;
 
 @end

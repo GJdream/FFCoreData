@@ -15,5 +15,6 @@
 
 @property (nonatomic, strong) NSData *ffcity;
 @property (nonatomic, strong) FFCDUserProfile *profile;
+@property (nonatomic, copy) NSString *ffurl;
 
 @end

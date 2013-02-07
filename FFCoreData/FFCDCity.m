@@ -14,5 +14,6 @@
 
 @dynamic ffcity;
 @dynamic profile;
+@dynamic ffurl;
 
 @end

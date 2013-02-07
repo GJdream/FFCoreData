@@ -14,5 +14,6 @@
 @dynamic ffuserProfile;
 @dynamic sortDesc;
 @dynamic city;
+@dynamic ffurl;
 
 @end
